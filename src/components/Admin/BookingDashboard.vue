@@ -15,7 +15,7 @@
                     contain
                 >
             </v-toolbar-title>
-            <v-toolbar-title class="ml-4 hidden-sm-and-down">Booking Service</v-toolbar-title>
+            <v-toolbar-title class="ml-4 hidden-sm-and-down">Booking Service </v-toolbar-title>
             <v-toolbar-title class="ml-5 hidden-md-and-up">Booking Service</v-toolbar-title>
             <v-spacer></v-spacer>
             <v-toolbar-title>Welcome, <strong>{{getUser()}}</strong>!
@@ -47,8 +47,6 @@
             </v-card>
         </template> -->
 
-        
-
         <template>
             <v-data-iterator
                 :items="filteredData"
@@ -62,6 +60,7 @@
                 class="mx-7"
             >
                 <template v-slot:header>
+                        
                     <v-toolbar
                     dark
                     color="secondary"
@@ -76,6 +75,10 @@
                         prepend-inner-icon="mdi-magnify"
                         label="Cari ... "
                     ></v-text-field>
+                    <v-spacer></v-spacer>
+                    
+                    <h3 class="text" font-weight-medium mb-5>{{getDealer()}}</h3>
+
                     <template v-if="$vuetify.breakpoint.mdAndUp">
                         <v-spacer></v-spacer>
                         <v-chip-group
@@ -155,6 +158,7 @@
                     </template>
                     </v-toolbar>
                 </template>
+                    
                 <template v-slot:default="props">
                     <v-row>
                     <v-col
@@ -536,18 +540,43 @@
               dark
             ><h2>Edit Status Booking</h2></v-toolbar>
                     <v-form v-model="valid" ref="form1" class="mx-5 my-5">
-                        
-                        <v-autocomplete
-                            prepend-inner-icon="mdi-marker-check"
+                        <v-chip-group
                             v-model="form.status"
-                            :rules="statusRules"
-                            label="Status Booking"
-                            :items="status_booking"
-                            item-text="name"
-                            item-value="name"
-                            chips
-                            outlined
-                        ></v-autocomplete>
+                            column
+                        >
+                            <v-chip
+                            color="warning"
+                            filter
+                            value="New"
+                            >
+                            New
+                            </v-chip>
+                            <v-chip
+                            color="success"
+                            filter
+                            value="Confirmed"
+                            >
+                            Confirmed
+                            </v-chip>
+
+                            <v-chip
+                            color="success"
+                            value="Rescheduled & Confirmed"
+                            filter
+                            
+                            >
+                            Rescheduled & Confirmed
+                            </v-chip>
+
+                            <v-chip
+                            color="error"
+                            filter
+                            value="Cancelled"
+                            >
+                            Cancelled
+                            </v-chip>
+
+                        </v-chip-group>
                         <v-textarea
                             prepend-inner-icon="mdi-pencil-box-multiple"
                             v-model="form.keterangan_cco"
@@ -756,16 +785,17 @@ import moment from 'moment-timezone';
             })
         },
         countByNew(){
-            return this.bookings.filter((i) => i.status === 'New').length
+            var temp = localStorage.getItem('dealer')
+            return this.bookings.filter((i) => i.status === 'New' && i.id_dealer==localStorage.getItem('dealer')).length
         },
         countByConfirmed(){
-            return this.bookings.filter((i) => i.status === 'Confirmed').length
+            return this.bookings.filter((i) => i.status === 'Confirmed' && i.id_dealer==localStorage.getItem('dealer')).length
         },
         countByRescheduleConfirmed(){
-            return this.bookings.filter((i) => i.status === 'Rescheduled & Confirmed').length
+            return this.bookings.filter((i) => i.status === 'Rescheduled & Confirmed' && i.id_dealer==localStorage.getItem('dealer')).length
         },
         countByCancelled(){
-            return this.bookings.filter((i) => i.status === 'Cancelled').length
+            return this.bookings.filter((i) => i.status === 'Cancelled' && i.id_dealer==localStorage.getItem('dealer')).length
         },
         numberOfPages () {
         return Math.ceil(this.filteredData.length / this.itemsPerPage)
@@ -778,7 +808,7 @@ import moment from 'moment-timezone';
             this.$router.push({name:'AdminLogin'})
         },
         readData(){
-        var url = this.$api+'/booking-filtered/1'
+        var url = this.$api+'/booking-filtered/'+localStorage.getItem('dealer')
             this.$http.get(url,{
                 headers:{
                     'Authorization':'Bearer '+localStorage.getItem('token')
@@ -819,6 +849,9 @@ import moment from 'moment-timezone';
         },
         getUser(){
             return localStorage.getItem('nama')
+        },
+        getDealer(){
+            return localStorage.getItem('nama_dealer')
         },
         editDataHandler(item){
             this.editId = item.kode_booking

@@ -20,21 +20,20 @@
         <v-toolbar-title class="ml-5 hidden-md-and-up">Booking Service</v-toolbar-title>
     </v-app-bar>
 
-    <!-- Section Banner  -->
-    <section class="brown lighten-5 mb-3 mt-n4">
-        <v-parallax height="300">
+    <!-- Section Banner 
+    <section color="secondary" class="mb-3 mt-n2">
+        <v-img height="200px" src="https://asset.honda-indonesia.com/images/background/bgalt_10.jpg">
           <v-layout column align-center justify-center>
-            <div class="headline black--text mb-3 text-xs-center">
+            <div class="headline black--text text-xs-center">
             </div>
           </v-layout>
-        </v-parallax>
-    </section>
+        </v-img>
+    </section> -->
 
     <!-- Section Form Booking -->
-    <v-container fluid>
-        <span class="background">
-        <v-layout justify-center>
-        <v-stepper v-model="stepper" vertical flat class="ma-0 ma-md-3">
+    <v-container fluid class="background">
+        <v-layout justify-center class="ma-md-12 ma-sm-5">
+        <v-stepper v-model="stepper" color="#f5f5f5" vertical elevation="24"  class="ma-md-3">
             <v-stepper-step :complete="stepper > 1" step="1">
                 Ketentuan Booking Service
             </v-stepper-step>
@@ -165,6 +164,7 @@
                             outlined
                         ></v-autocomplete>
                         <v-autocomplete
+                            class="hidden-sm-and-up"
                             v-show="form.jenis_pekerjaan===''"
                             label="Jenis Layanan"
                             disabled
@@ -172,6 +172,7 @@
                         ></v-autocomplete>
                         <span v-if="form.jenis_pekerjaan==='Authorized Workshop'">
                             <v-autocomplete
+                            class="hidden-sm-and-up"
                             :rules="jenisLayananRules"
                             v-model="form.jenis_layanan"
                             label="Jenis Layanan"
@@ -182,6 +183,7 @@
                         ></v-autocomplete>
                         </span><span v-else-if="form.jenis_pekerjaan==='Home Service'">
                             <v-autocomplete
+                                class="hidden-sm-and-up"
                                 :rules="jenisLayananRules"
                                 label="Jenis Layanan"
                                 v-model="form.jenis_layanan"
@@ -201,6 +203,7 @@
                         min-width="auto">
                         <template v-slot:activator="{ on, attrs }">
                             <v-text-field 
+                                class="hidden-sm-and-up"
                                 prepend-inner-icon="mdi-calendar-range"
                                 v-model="form.tgl_service"
                                 :rules="tglServiceRules"
@@ -212,6 +215,7 @@
                             ></v-text-field>
                         </template>
                         <v-date-picker
+                            class="hidden-sm-and-up"
                             v-model="form.tgl_service"
                             no-title
                             :min="new Date((new Date()).valueOf() + 1000*3600*24).toISOString().slice(0,10)"
@@ -220,6 +224,7 @@
                     </v-menu>
                     <v-autocomplete
                             prepend-inner-icon="mdi-clock-time-eight"
+                            class="hidden-sm-and-up"
                             v-model="form.jam_service"
                             :rules="jamServiceRules"
                             label="Jam Service"
@@ -447,9 +452,9 @@
                 </v-card>
                 <v-checkbox
                     v-model="offers_checkbox"
-                    label="Saya ingin menerima informasi penawaran dari Hyundai mendatang."
+                    label="Saya ingin menerima informasi penawaran dari HONDA mendatang."
                     ></v-checkbox>
-                <p>CAPTCHA</p>
+                <p>CAPTCHA berada disini nantinya</p>
                 </v-form>
             </v-card>
             <v-btn
@@ -464,8 +469,29 @@
             </v-stepper-content>
         </v-stepper>
         </v-layout>
-        </span>
     </v-container>
+    <template>
+  <v-footer
+    dark
+    padless
+    class="mt-10"
+    width="100%"
+  >
+    <v-card
+      flat
+      tile
+      class="white--text text-center"
+      color="secondary"
+      width="100%"
+    >
+      <v-divider></v-divider>
+
+      <v-card-text class="white--text">
+        {{ new Date().getFullYear() }} — <strong>Honda Bintang Group</strong>
+      </v-card-text>
+    </v-card>
+  </v-footer>
+</template>
 
      <v-snackbar v-model="snackbar1" :color="color" timeout="2000" bottom>
             {{response_message}}
@@ -653,5 +679,12 @@ export default {
 </script>
 
 <style>
-
+.background{
+    width: 100%;
+    height: 100%;
+    left: 0;
+    background: url( 'https://www.hondasolobaru.co.id/wp-content/uploads/2022/08/download-2.png') no-repeat center center;
+    background-size: cover;
+    transform: scale(1.1);
+  }
 </style>

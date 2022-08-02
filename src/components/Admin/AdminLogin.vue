@@ -33,6 +33,16 @@
                                     <v-text-field 
                                     :append-icon="show3 ? 'mdi-eye' : 'mdi-eye-off'" :type="show3 ? 'text' : 'password'" @click:append="show3 = !show3"
                                     :rules="passwordRules" v-model="form.password" label="Password" prepend-inner-icon="mdi-lock" outlined required></v-text-field>
+                                    <v-autocomplete
+                                        :rules="dealerRules"
+                                        v-model="form.id_dealer"
+                                        prepend-inner-icon="mdi-map-marker"
+                                        label="Dealer"
+                                        outlined
+                                        :items="dealer"
+                                        item-text="nama_dealer"
+                                        item-value="id_dealer"
+                                    ></v-autocomplete>
                                 </v-form>
                         <v-card-actions class="justify-end">
                             <v-btn text color="primary" @click="login">Login</v-btn>
@@ -46,12 +56,29 @@
             </v-layout>
         </v-container>
 
-        <v-snackbar v-model="snackbar" :color="color" timeout="2000" bottom>
-            {{response_message}}
+        <v-snackbar elevation="24" v-model="snackbar" :color="color" timeout="2000" bottom>
+                    {{error_message}}
+            <template v-slot:action="{ attrs }">
+                        <v-btn
+                        color="white"
+                        text
+                        v-bind="attrs"
+                        @click="snackbar1 = false"
+                        >
+                        Close</v-btn>
+                    </template>
         </v-snackbar>
-
-        <v-snackbar v-model="snackbar1" :color="color" timeout="2000" bottom>
-            {{error_message}}
+        <v-snackbar elevation="24" v-model="snackbar1" :color="color" dark timeout="2000">
+            {{response_message}}
+            <template v-slot:action="{ attrs }">
+            <v-btn
+            color="white"
+            text
+            v-bind="attrs"
+            @click="snackbar1 = false"
+            >
+            Close</v-btn>
+            </template>
         </v-snackbar>
     </v-app>
 </template>
@@ -63,28 +90,51 @@ export default {
         return{
             user: new FormData,
             show3: false,
+            alertEmpty: false,
+            snackbar: false,
+            snackbar1: false,
             form:{
                 nama: '',
                 email: '',
-                password: ''
+                password: '',
+                id_dealer: '',
+                nama_dealer: ''
             },
             emailRules: [
                 (v) => !!v || 'Email harus diisi',
             ],
             passwordRules: [
                 (v) => !!v || 'Password harus diisi'
-            ]
+            ],
+            dealerRules: [
+                (v) => !!v || 'Dealer harus diisi'
+            ],
+            dealer: [{
+                id_dealer: '',
+                nama_dealer: ''
+           }],
+           response_message:'',
+           error_message:''
         }
     },
     methods:{
         login(){
-            this.$http.post(this.$api+'/login',{
+            if(this.$refs.form.validate()){
+                this.$http.post(this.$api+'/login',{
                 email: this.form.email,
                 password: this.form.password
             }).then(response =>{
                 this.response_message = response.data.message;
                 localStorage.setItem('nama',response.data.data.nama)
                 localStorage.setItem('token', response.data.access_token)
+                localStorage.setItem('dealer', this.form.id_dealer)
+                for(let i=0; i<this.dealer.length; i++){
+                    console.log(this.dealer.length)
+                    if(this.dealer[i].id_dealer===this.form.id_dealer)
+                    localStorage.setItem('nama_dealer', this.dealer[i].nama_dealer)
+
+                }
+                console.log(localStorage.getItem('nama_dealer'))
                 this.snackbar1 = true
                 this.color = 'secondary'
                 this.$router.push({
@@ -96,14 +146,29 @@ export default {
                 this.color = 'warning'
                 localStorage.removeItem('token')
             })
+            }
         },
         resetForm(){
             this.form = {
                 nama: '',
                 email: '',
-                password: ''
+                password: '',
+                dealer: ''
             }
-        }
+        },
+        getDataDealer(){
+            var url = this.$api+'/dealer'
+                this.$http.get(url,{
+                    headers:{
+
+                    }
+                }).then(response=>{
+                    this.dealer = response.data.data
+                })
+        },
+    },
+    mounted(){
+        this.getDataDealer();
     }
 }
 </script>

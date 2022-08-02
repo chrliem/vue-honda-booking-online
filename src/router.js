@@ -24,16 +24,12 @@ const router = new VueRouter({
             meta: {title: 'Login'},
             component: importComponent('Admin/AdminLogin'),
         },
-            // children: [
-                {
-                    path:"/admin/dashboard/",
-                    name:"BookingDashboard",
-                    meta: {title:'Booking Dashboard'},
-                    component: importComponent('Admin/BookingDashboard'),
-                },
-            // ]
-        // },
-        
+        {
+            path:"/admin/dashboard/",
+            name:"BookingDashboard",
+            meta: {title:'Booking Dashboard'},
+            component: importComponent('Admin/BookingDashboard'),
+        },        
     ]
 });
 
@@ -43,11 +39,11 @@ router.beforeEach((to, from, next)=>{
     else next()
 })
 
-router.beforeEach((to, from, next)=>{
-    document.title = to.meta.title
-    if(to.name !== 'BookingDashboard' && to.name!=='AddBooking' && localStorage.getItem('token')!==null) next({ name: 'BookingDashboard'})
-    else next()
-})
+// router.beforeEach((to, from, next)=>{
+//     document.title = to.meta.title
+//     if(to.name !== 'BookingDashboard' && to.name!=='AddBooking') next({ name: 'BookingDashboard'})
+//     else next()
+// })
 
 // router.beforeEach((to, from, next)=>{
 //     document.title = to.meta.title
