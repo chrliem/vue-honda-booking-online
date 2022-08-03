@@ -542,12 +542,30 @@
             </v-card>
         </v-footer>
     </template>
-     <v-snackbar v-model="snackbar1" :color="color" timeout="5000" bottom>
+     <v-snackbar v-model="snackbar1" elevation="24" :color="color" timeout="5000" bottom>
             {{response_message}}
+            <template v-slot:action="{ attrs }">
+                        <v-btn
+                        color="white"
+                        text
+                        v-bind="attrs"
+                        @click="snackbar1 = false"
+                        >
+                        Close</v-btn>
+                    </template>
         </v-snackbar>
 
         <v-snackbar v-model="snackbar2" :color="color" timeout="2000" bottom>
             {{error_message}}
+            <template v-slot:action="{ attrs }">
+            <v-btn
+            color="white"
+            text
+            v-bind="attrs"
+            @click="snackbar2 = false"
+            >
+            Close</v-btn>
+            </template>
         </v-snackbar>
 
     <v-overlay
@@ -720,8 +738,10 @@ export default {
             }).then(response=>{
                 this.response_message = response.data.message
                 this.snackbar1 = true
-                this.color = 'blue'
-                window.location.reload()
+                this.color = 'success'
+                setTimeout(function(){
+                    window.location.reload(1);
+                }, 5000);
             }).catch(error=>{
                 this.error_message = error.response.data.message
                 this.color = 'red'
