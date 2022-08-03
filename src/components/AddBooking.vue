@@ -39,15 +39,15 @@
             </v-stepper-step>
 
             <v-stepper-content step="1">
-                <v-card flat color="red lighten-5" class="mb-12 pa-5" height="auto">
-                    <p class="text-left">1. Lorem ipsum.</p>
+                <v-card flat color="blue-grey lighten-5" class="mb-12 pa-5" height="auto">
+                    <p class="text-left">1. Lorem ipsum </p>
                     <p class="text-left">2. Lorem ipsum..</p>
                     <p class="text-left">3. Lorem ipsum..</p>
                     <p class="text-left">4. Lorem ipsum.</p>
                     <p class="text-left">5. Lorem ipsum..</p>
                     <p class="text-left">6. Lorem ipsum..</p>
                     <p class="text-left">7. Lorem ipsum.</p>
-                    <p class="text-left">8.Lorem ipsum.</p>
+                    <p class="text-left">8. Lorem ipsum.</p>
                     <p class="text-left">9. Lorem ipsum.</p>
                 </v-card>
                 <v-btn color="primary" @click="stepper = 2">
@@ -73,7 +73,7 @@
                         <v-text-field placeholder="081234567890" :rules="noHPRules" v-model="form.no_handphone" label="Nomor Handphone" hint="Contoh: 081234567890" prepend-inner-icon="mdi-cellphone" outlined></v-text-field>
                         <v-text-field placeholder="AD 1234 HO" :rules="noPolisiRules" v-model="form.no_polisi" label="Nomor Polisi" prepend-inner-icon="mdi-car-search" hint="Contoh: AD 1234 HO" outlined></v-text-field>
                         <v-autocomplete
-                                class="hidden-sm-and-up"
+                                class="hidden-lg-and-up"
                                 prepend-inner-icon="mdi-car"
                                 :rules="kendaraanRules"
                                 v-model="form.id_kendaraan"
@@ -84,7 +84,7 @@
                                 outlined
                             ></v-autocomplete>
                             <v-autocomplete
-                                class="hidden-sm-and-up"
+                                class="hidden-lg-and-up"
                                 prepend-inner-icon="mdi-car-clutch"
                                 :rules="transmisiRules"
                                 v-model="form.jenis_transmisi"
@@ -142,7 +142,7 @@
                  <v-form v-model="valid1" ref="form1">
                     <!-- Mobile version -->
                     <v-autocomplete
-                            class="hidden-sm-and-up"
+                            class="hidden-lg-and-up"
                             prepend-inner-icon="mdi-map-marker"
                             :rules="dealerRules"
                             v-model="form.id_dealer"
@@ -153,7 +153,7 @@
                             item-value="id_dealer"
                         ></v-autocomplete>
                     <v-autocomplete
-                            class="hidden-sm-and-up"
+                            class="hidden-lg-and-up"
                             prepend-inner-icon="mdi-tools"
                             v-model="form.jenis_pekerjaan"
                             :rules="jenisPekerjaanRules"
@@ -164,7 +164,7 @@
                             outlined
                         ></v-autocomplete>
                         <v-autocomplete
-                            class="hidden-sm-and-up"
+                            class="hidden-lg-and-up"
                             v-show="form.jenis_pekerjaan===''"
                             label="Jenis Layanan"
                             disabled
@@ -172,7 +172,7 @@
                         ></v-autocomplete>
                         <span v-if="form.jenis_pekerjaan==='Authorized Workshop'">
                             <v-autocomplete
-                            class="hidden-sm-and-up"
+                            class="hidden-lg-and-up"
                             :rules="jenisLayananRules"
                             v-model="form.jenis_layanan"
                             label="Jenis Layanan"
@@ -183,7 +183,7 @@
                         ></v-autocomplete>
                         </span><span v-else-if="form.jenis_pekerjaan==='Home Service'">
                             <v-autocomplete
-                                class="hidden-sm-and-up"
+                                class="hidden-lg-and-up"
                                 :rules="jenisLayananRules"
                                 label="Jenis Layanan"
                                 v-model="form.jenis_layanan"
@@ -203,7 +203,7 @@
                         min-width="auto">
                         <template v-slot:activator="{ on, attrs }">
                             <v-text-field 
-                                class="hidden-sm-and-up"
+                                class="hidden-lg-and-up"
                                 prepend-inner-icon="mdi-calendar-range"
                                 v-model="form.tgl_service"
                                 :rules="tglServiceRules"
@@ -215,7 +215,7 @@
                             ></v-text-field>
                         </template>
                         <v-date-picker
-                            class="hidden-sm-and-up"
+                            class="hidden-lg-and-up"
                             v-model="form.tgl_service"
                             no-title
                             :min="new Date((new Date()).valueOf() + 1000*3600*24).toISOString().slice(0,10)"
@@ -224,7 +224,7 @@
                     </v-menu>
                     <v-autocomplete
                             prepend-inner-icon="mdi-clock-time-eight"
-                            class="hidden-sm-and-up"
+                            class="hidden-lg-and-up"
                             v-model="form.jam_service"
                             :rules="jamServiceRules"
                             label="Jam Service"
