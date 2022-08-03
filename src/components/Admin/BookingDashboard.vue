@@ -158,7 +158,9 @@
                     </template>
                     </v-toolbar>
                 </template>
-                    
+                <template v-if="$vuetify.noDataText">
+                    <h2>There is nothing here </h2>
+                </template>
                 <template v-slot:default="props">
                     <v-row>
                     <v-col
@@ -365,7 +367,9 @@
                         </v-row>
                     </v-toolbar>
                 </template>
+               
             </v-data-iterator>
+            
         <template>
             <v-dialog
                 v-model="editDataDialog"
@@ -625,6 +629,14 @@
             Close</v-btn>
             </template>
         </v-snackbar>
+         <v-overlay
+                :opacity="0.5"
+                :value="overlay"
+                >
+                    <v-progress-circular indeterminate size="86">
+                        Loading...
+                    </v-progress-circular>
+        </v-overlay>
     </v-app>
 </template>
 
@@ -1000,6 +1012,7 @@ import moment from 'moment-timezone';
         this.getBookingLog();
         this.getDataKendaraan();
         this.getDataDealer();
+        this.overlay = false
     },
     created(){
         this.interval = setInterval(this.readData, 5000)

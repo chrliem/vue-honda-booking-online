@@ -360,30 +360,6 @@
                 flat class="mb-4">         
                 <v-card-subtitle><strong>Data Booking Anda</strong></v-card-subtitle>
                 <v-divider></v-divider>
-                <!-- <v-card-text class="text-left"> 
-                    <p><strong>Nama Lengkap: </strong><v-chip>{{form.nama_customer}} </v-chip></p>
-                    <p><strong>Alamat Email: </strong><v-chip>{{form.email_customer}} </v-chip></p>
-                    <p><strong>No. Handphone: </strong><v-chip>{{form.no_handphone}} </v-chip></p>
-                    <p><strong>No. Polisi: </strong> <v-chip label color="black" text-color="white">{{form.no_polisi}}</v-chip></p>
-                    <span v-for="k in kendaraan" :key="k.id_kendaraan">
-                    <template v-if="k.id_kendaraan===form.id_kendaraan">
-                        <p><strong>Dealer: </strong><v-chip>{{k.model_kendaraan}}</v-chip></p>
-                    </template>
-                    </span>  
-                    <p><strong>Jenis Transmisi: </strong><v-chip>{{form.jenis_transmisi}}</v-chip></p>
-                <v-divider></v-divider>
-                <span v-for="d in dealer" :key="d.id_dealer">
-                    <template v-if="d.id_dealer===form.id_dealer">
-                        <p> <strong>Dealer: </strong><v-chip>{{d.nama_dealer}}</v-chip></p>
-                    </template>
-                </span>    
-                <p> <strong>Tanggal Service:</strong> <v-chip>{{formatDate()}}</v-chip></p>
-                <p> <strong>Jam Service: </strong><v-chip>{{form.jam_service}}</v-chip></p>
-                <p> <strong>Jenis Pekerjaan:</strong> <v-chip>{{form.jenis_pekerjaan}}</v-chip></p>
-                <p> <strong>Jenis Layanan:</strong> <v-chip>{{form.jenis_layanan}}</v-chip></p>
-                <p> <strong>Pesan/Keluhan: </strong></p>
-                <p> {{form.keterangan_customer}} </p>
-                </v-card-text> -->
                 <v-simple-table dense>
                     <tbody>
                         <tr>
@@ -471,28 +447,27 @@
         </v-layout>
     </v-container>
     <template>
-  <v-footer
-    dark
-    padless
-    class="mt-10"
-    width="100%"
-  >
-    <v-card
-      flat
-      tile
-      class="white--text text-center"
-      color="secondary"
-      width="100%"
-    >
-      <v-divider></v-divider>
+        <v-footer
+            dark
+            padless
+            class="mt-10"
+            width="100%"
+        >
+            <v-card
+            flat
+            tile
+            class="white--text text-center"
+            color="secondary"
+            width="100%"
+            >
+            <v-divider></v-divider>
 
-      <v-card-text class="white--text">
-        {{ new Date().getFullYear() }} — <strong>Honda Bintang Group</strong>
-      </v-card-text>
-    </v-card>
-  </v-footer>
-</template>
-
+            <v-card-text class="white--text">
+                {{ new Date().getFullYear() }} — <strong>Honda Bintang Group</strong>
+            </v-card-text>
+            </v-card>
+        </v-footer>
+    </template>
      <v-snackbar v-model="snackbar1" :color="color" timeout="2000" bottom>
             {{response_message}}
         </v-snackbar>
@@ -500,6 +475,15 @@
         <v-snackbar v-model="snackbar2" :color="color" timeout="2000" bottom>
             {{error_message}}
         </v-snackbar>
+
+    <v-overlay
+      :opacity="1"
+      :value="overlay"
+    >
+      <v-progress-circular indeterminate size="64">
+        Loading...
+      </v-progress-circular>
+    </v-overlay>
   </v-app>
 </template>
 
@@ -674,6 +658,7 @@ export default {
     mounted(){
         this.getDataKendaraan();
         this.getDataDealer();
+        this.overlay = false
     }
 };
 </script>
