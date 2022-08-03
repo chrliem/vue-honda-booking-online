@@ -123,16 +123,6 @@
                             </v-chip>
 
                         </v-chip-group>
-                        <!-- <v-select
-                        v-model="statusFilter"
-                        flat
-                        solo-inverted
-                        hide-details
-                        :items="['New','Confirmed','Rescheduled & Confirmed','Cancelled']"
-                        prepend-inner-icon="mdi-filter"
-                        label="Filter by Status"
-                        clearable
-                        ></v-select> -->
                         <v-spacer></v-spacer>
                         <v-btn-toggle
                         v-model="sortDesc"
@@ -158,9 +148,7 @@
                     </template>
                     </v-toolbar>
                 </template>
-                <template v-if="$vuetify.noDataText">
-                    <h2>There is nothing here </h2>
-                </template>
+                
                 <template v-slot:default="props">
                     <v-row>
                     <v-col
@@ -303,9 +291,8 @@
                         </v-expansion-panels>
                         </v-card>
                     </v-col>
-                    </v-row>
+                    </v-row>                 
                 </template>
-
                 <template v-slot:footer>
                     <v-toolbar color="secondary" dark class="mt-5">
                         <v-row

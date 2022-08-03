@@ -460,7 +460,81 @@
             color="secondary"
             width="100%"
             >
-            <v-divider></v-divider>
+            <v-card-text class="white--text">
+                <h3>DEALER KAMI:</h3>
+            </v-card-text>
+            <v-row
+                justify="center"
+                no-gutters
+                class="mt-n5"
+                >
+                <v-btn
+                    color="white"
+                    text
+                    href="https://www.hondasolobaru.co.id/"
+                    rounded
+                    class="my-2"
+                >
+                    Honda Solo Baru
+                </v-btn>
+                <v-btn
+                    color="white"
+                    text
+                    rounded
+                    href="https://hondabintangsolo.co.id/"
+                    class="my-2"
+                >
+                    Honda Bintang Solo
+                </v-btn>
+                <v-btn
+                    color="white"
+                    text
+                    href="https://www.hondaperkasaklaten.co.id/"
+                    rounded
+                    class="my-2"
+                >
+                    Honda Perkasa Klaten
+                </v-btn>
+                <v-btn
+                    color="white"
+                    text
+                    rounded
+                    href="https://hondabintangmadiun.co.id/"
+                    class="my-2"
+                >
+                    Honda Bintang Madiun
+                </v-btn>
+                <v-btn
+                    color="white"
+                    text
+                    rounded
+                    href="https://hondasukunmalang.co.id/"
+                    class="my-2"
+                >
+                    Honda Sukun Malang
+                </v-btn>
+                <v-btn
+                    color="white"
+                    text
+                    rounded
+                    href="https://hondalestariprobolinggo.co.id/"
+                    class="my-2"
+                >
+                    Honda Lestari Probolinggo
+                </v-btn>
+                <v-btn
+                    color="white"
+                    text
+                    rounded
+                    href="https://hondabintangtabanan.co.id/"
+                    class="my-2"
+                >
+                    Honda Bintang Tabanan
+                </v-btn>
+            </v-row>
+            <v-divider></v-divider><br>
+            <img class="hidden-md-and-down" position="center center" width="7%" src="https://hondasukunmalang.co.id/wp-content/uploads/2022/07/HSM.png">
+            <img class="hidden-sm-and-up" position="center center" width="20%" src="https://hondasukunmalang.co.id/wp-content/uploads/2022/07/HSM.png">
 
             <v-card-text class="white--text">
                 {{ new Date().getFullYear() }} — <strong>Honda Bintang Group</strong>
@@ -468,7 +542,7 @@
             </v-card>
         </v-footer>
     </template>
-     <v-snackbar v-model="snackbar1" :color="color" timeout="2000" bottom>
+     <v-snackbar v-model="snackbar1" :color="color" timeout="5000" bottom>
             {{response_message}}
         </v-snackbar>
 
