@@ -15,7 +15,7 @@ const router = new VueRouter({
         {
             path:'/',
             name: 'AddBooking',
-            meta:{title:'Online Booking'},
+            meta:{title:'Online Booking Service'},
             component: importComponent('AddBooking'),
         },
         {

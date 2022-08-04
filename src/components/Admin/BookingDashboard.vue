@@ -648,12 +648,16 @@ import moment from 'moment-timezone';
         logs: [],
         filter: [],
         sortDesc: true,
+        overlay: true,
         page: 1,
         itemsPerPage: 15,
         itemsPerPageArray: [15, 30, 50],
         sortBy:'created_at',
         statusFilter: '',
         interval: null,
+        valid: false,
+        menu1: false,
+        color: '',
         keys: [
             'Tanggal Service',
             'Tanggal Booking',
@@ -972,7 +976,7 @@ import moment from 'moment-timezone';
             return moment(String(date)).locale('id').format('dddd, DD MMMM YYYY HH:mm')
         },
         formatTimezone(date1){
-            return moment(date1).tz('Indonesia/Jakarta').locale('id').format('dddd, DD MMMM YYYY HH:mm') 
+            return moment(date1).tz('Asia/Jakarta').locale('id').format('dddd, DD MMMM YYYY HH:mm') 
         },
         nextPage () {
         if (this.page + 1 <= this.numberOfPages) this.page += 1
