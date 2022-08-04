@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    
+
         <v-app-bar app height="80">
         <v-toolbar-title>
             <img
@@ -69,7 +69,7 @@
                     <v-container>
                     <v-form v-model="valid" ref="form">
                         <v-text-field :rules="namaRules" v-model="form.nama_customer" label="Nama Lengkap" hint="Contoh: John Doe" prepend-inner-icon="mdi-account" outlined ></v-text-field>
-                        <v-text-field v-model="form.email_customer" label="Alamat Email" hint="Contoh: username@email.com" prepend-inner-icon="mdi-email" outlined></v-text-field>
+                        <v-text-field v-model="form.email_customer" label="Alamat Email (Opsional)" hint="Contoh: username@email.com" prepend-inner-icon="mdi-email" outlined></v-text-field>
                         <v-text-field placeholder="081234567890" :rules="noHPRules" v-model="form.no_handphone" label="Nomor Handphone" hint="Contoh: 081234567890" prepend-inner-icon="mdi-cellphone" outlined></v-text-field>
                         <v-text-field placeholder="AD 1234 HO" :rules="noPolisiRules" v-model="form.no_polisi" label="Nomor Polisi" prepend-inner-icon="mdi-car-search" hint="Contoh: AD 1234 HO" outlined></v-text-field>
                         <v-autocomplete
@@ -589,8 +589,12 @@ export default {
             load: false,
             snackbar: false,
             snackbar1: false,
+            snackbar2: false,
             error_message: '',
             response_message: '',
+            color: '',
+            offers_checkbox: false,
+            privacy_checkbox: false,
             menu1: false,
             valid: false,
             valid1: false,
