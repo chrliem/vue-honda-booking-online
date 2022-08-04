@@ -13,7 +13,7 @@ const router = new VueRouter({
     mode: 'history',
     routes: [
         {
-            path:'/',
+            path:'',
             name: 'AddBooking',
             meta:{title:'Online Booking Service'},
             component: importComponent('AddBooking'),
@@ -25,7 +25,7 @@ const router = new VueRouter({
             component: importComponent('Admin/AdminLogin'),
         },
         {
-            path:"/admin/dashboard/",
+            path:"/admin/dashboard",
             name:"BookingDashboard",
             meta: {title:'Booking Dashboard'},
             component: importComponent('Admin/BookingDashboard'),

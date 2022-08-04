@@ -10,21 +10,12 @@ import 'material-design-icons-iconfont/dist/material-design-icons.css'
 Vue.config.productionTip = false
 
 Vue.prototype.$http = axios;
+/* Development */
 Vue.prototype.$api = 'http://127.0.0.1:8000/api';
 
-// import Echo from 'laravel-echo';
+/*Production */
+// Vue.prototype.$api = 'https://booking.bintang-group.co.id:81/api'
 
-// import Pusher from 'pusher-js';
-// window.Pusher = Pusher;
-
-// window.Echo = new Echo({
-//     broadcaster: 'pusher',
-//     key: 'bed65d5b27af405706d0',
-//     wsHost: process.env.VUE_APP_WEBSOCKETS_SERVER,
-//     wsPort: 6001,
-//     forceTLS: false,
-//     disableStats: true
-// });
 
 new Vue({
   vuetify,
