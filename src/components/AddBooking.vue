@@ -420,11 +420,12 @@
                 <v-checkbox
                     v-model="privacy_checkbox"
                     :rules="privacyRules"
-                    label="Saya telah membaca dan menyetujui*"
+                    label="Saya telah membaca dan menyetujui kebijakan privasi*"
                     required
                     ></v-checkbox>
-                <v-card>
-                    <v-card-text><p> Lorem ipsum </p></v-card-text>
+                <v-card dense>
+                    <v-card-text>
+                        <p> <strong>Kebijakan Privasi </strong> <br>Kami menghargai kepercayaan Anda. Untuk menghormati kepercayaan itu, dealer kami mematuhi standar etika dalam mengumpulkan, menggunakan, dan melindungi informasi apa pun yang Anda berikan. </p></v-card-text>
                 </v-card>
                 <v-checkbox
                     v-model="offers_checkbox"
@@ -604,7 +605,7 @@ export default {
     name:'AddBooking',
     data (){ 
         return{
-            stepper: 1,
+            stepper: 4,
             load: false,
             snackbar: false,
             snackbar1: false,
