@@ -40,15 +40,13 @@
 
             <v-stepper-content step="1">
                 <v-card flat color="blue-grey lighten-5" class="mb-12 pa-5" height="auto">
-                    <p class="text-left">1. Lorem ipsum </p>
-                    <p class="text-left">2. Lorem ipsum..</p>
-                    <p class="text-left">3. Lorem ipsum..</p>
-                    <p class="text-left">4. Lorem ipsum.</p>
-                    <p class="text-left">5. Lorem ipsum..</p>
-                    <p class="text-left">6. Lorem ipsum..</p>
-                    <p class="text-left">7. Lorem ipsum.</p>
-                    <p class="text-left">8. Lorem ipsum.</p>
-                    <p class="text-left">9. Lorem ipsum.</p>
+                    <ol>
+                        <li class="text-left">Booking harus di lakukan maksimal H-1 sebelum pukul 16.00 WIB jika service dilakukan pada esok harinya.</li>
+                        <li class="text-left">Setelah melakukan Booking Online, maka staff booking service akan segera menghubungi Anda untuk konfirmasi ulang, apakah jam booking tersedia atau sudah penuh</li>
+                        <li class="text-left">Jika jam booking yang diinginkan sudah penuh, akan di tawarkan opsi untuk jam lain oleh staff booking service</li>
+                        <li class="text-left">Konfirmasi booking kepada customer oleh staff booking dilakukan pada jam kerja Senin-Jumat pkl 08.00-16.00 WIB dan Sabtu pkl 08.00-12.00 WIB</li>
+                        <li class="text-left">Waktu toleransi keterlambatan kedetangan booking service adalah <strong>15 menit</strong></li>
+                    </ol>
                 </v-card>
                 <v-btn color="primary" @click="stepper = 2">
                     Saya memahami
@@ -69,9 +67,9 @@
                     <v-container>
                     <v-form v-model="valid" ref="form">
                         <v-text-field :rules="namaRules" v-model="form.nama_customer" label="Nama Lengkap" hint="Contoh: John Doe" prepend-inner-icon="mdi-account" outlined ></v-text-field>
-                        <v-text-field v-model="form.email_customer" label="Alamat Email (Opsional)" hint="Contoh: username@email.com" prepend-inner-icon="mdi-email" outlined></v-text-field>
+                        <v-text-field v-model="form.email_customer" label="Alamat Email" hint="Contoh: username@email.com" prepend-inner-icon="mdi-email" outlined></v-text-field>
                         <v-text-field placeholder="081234567890" :rules="noHPRules" v-model="form.no_handphone" label="Nomor Handphone" hint="Contoh: 081234567890" prepend-inner-icon="mdi-cellphone" outlined></v-text-field>
-                        <v-text-field placeholder="AD 1234 HO" :rules="noPolisiRules" v-model="form.no_polisi" label="Nomor Polisi" prepend-inner-icon="mdi-car-search" hint="Contoh: AD 1234 HO" outlined></v-text-field>
+                        <v-text-field placeholder="AD 1234 HO" :rules="noPolisiRules" v-model="form.no_polisi" label="Nomor Polisi" prepend-inner-icon="mdi-car-search" hint="Contoh: AD 1234 HO atau ad 1234 ho" outlined></v-text-field>
                         <v-autocomplete
                                 class="hidden-lg-and-up"
                                 prepend-inner-icon="mdi-car"
@@ -194,6 +192,7 @@
                             ></v-autocomplete>
                         </span>
                         <v-menu
+                        class="hidden-lg-and-up"
                         ref="menu1"
                         v-model="menu1"
                         :close-on-content-click="false"
@@ -313,6 +312,7 @@
                             ></v-text-field>
                         </template>
                         <v-date-picker
+                            class="hidden-md-and-down"
                             v-model="form.tgl_service"
                             no-title
                             :min="new Date((new Date()).valueOf() + 1000*3600*24).toISOString().slice(0,10)"
@@ -430,7 +430,23 @@
                     v-model="offers_checkbox"
                     label="Saya ingin menerima informasi penawaran dari HONDA mendatang."
                     ></v-checkbox>
-                <p>CAPTCHA berada disini nantinya</p>
+                    <template>
+                    <vue-recaptcha 
+                        class="d-flex justify-center"
+                        v-model="form.captcha"
+                        ref="recaptcha" 
+                        sitekey="6Ler4UshAAAAACAqtzEU_sa0E6Wq9m70xdrMVHYG"
+                        @verify=onVerify />
+                        <v-alert
+                            v-model="captcha_validation"
+                            dense
+                            outlined
+                            type="error"
+                            class="mt-3 mx-12 text-caption"
+                        >
+                            {{ error_captcha }}
+                        </v-alert>
+                </template>
                 </v-form>
             </v-card>
             <v-btn
@@ -576,22 +592,27 @@
         Loading...
       </v-progress-circular>
     </v-overlay>
+
+    
   </v-app>
 </template>
 
 <script>
 import moment from 'moment';
-export default {
+
+export default { 
     name:'AddBooking',
-    data (){
+    data (){ 
         return{
             stepper: 1,
             load: false,
             snackbar: false,
             snackbar1: false,
             snackbar2: false,
+            captcha_validation: false,
             error_message: '',
             response_message: '',
+            error_captcha: '',
             color: '',
             offers_checkbox: false,
             privacy_checkbox: false,
@@ -607,7 +628,7 @@ export default {
             ],
             noPolisiRules: [
                 (v) => !!v || 'Nomor polisi harus diisi',
-                (v) => /^[A-Z]{1,2}\s{1}\d{0,4}\s{0,1}[A-Z]{0,3}$/.test(v) || "Nomor polisi tidak sesuai format. Contoh: AD 1234 HO"
+                (v) => /^[A-Za-z]{1,2}\s{1}\d{0,4}\s{0,1}[A-Za-z]{0,3}$/.test(v) || "Nomor polisi tidak sesuai format. Contoh: AD 1234 HO"
             ],
             kendaraanRules: [
                 (v) => !!v || 'Model kendaraan harus diisi',
@@ -646,7 +667,8 @@ export default {
                 jam_service:'',
                 jenis_pekerjaan: '',
                 jenis_layanan: '',
-                keterangan_customer: ''
+                keterangan_customer: '',
+                captcha: false
             },
             
            kendaraan: [{
@@ -714,8 +736,17 @@ export default {
         },
         validate3(){
             if(this.$refs.form2.validate()){
-                this.submit();
+                if(this.form.captcha){
+                    this.submit();
+                }else{
+                    this.error_captcha = 'Verifikasi harus diisi'
+                    this.captcha_validation = true
+                }
+                
             }
+        },
+        onVerify: function (response) {
+            if (response) this.form.captcha = true;
         },
         formatDate(){
             return moment(String(this.form.tgl_service)).locale('id').format('dddd, DD MMMM YYYY')
@@ -743,9 +774,10 @@ export default {
                 this.response_message = response.data.message
                 this.snackbar1 = true
                 this.color = 'success'
+                this.$refs.recaptcha.reset()
                 setTimeout(function(){
                     window.location.reload(1);
-                }, 5000);
+                }, 3000);
             }).catch(error=>{
                 this.error_message = error.response.data.message
                 this.color = 'red'
@@ -757,7 +789,7 @@ export default {
         this.getDataKendaraan();
         this.getDataDealer();
         this.overlay = false
-    }
+    },
 };
 </script>
 

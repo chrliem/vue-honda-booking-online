@@ -6,6 +6,9 @@ import router from './router'
 import axios from 'axios'
 import moment from 'moment'
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
+import VueCompositionApi from '@vue/composition-api'
+import { VueRecaptcha } from 'vue-recaptcha'
+
 
 Vue.config.productionTip = false
 
@@ -17,6 +20,8 @@ Vue.prototype.$http = axios;
 // Vue.prototype.$api = 'http://be.bintang-group.co.id:8000/api'
 Vue.prototype.$api = 'http://booking.bintang-group.co.id:8000/api'
 
+Vue.use(VueCompositionApi)
+Vue.component('vue-recaptcha', VueRecaptcha);
 
 new Vue({
   vuetify,
