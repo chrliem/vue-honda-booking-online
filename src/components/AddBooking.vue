@@ -436,7 +436,7 @@
                         class="d-flex justify-center"
                         v-model="form.captcha"
                         ref="recaptcha" 
-                        sitekey="6Ler4UshAAAAACAqtzEU_sa0E6Wq9m70xdrMVHYG"
+                        sitekey="6LemYEwhAAAAAKcWTc4RovvsWGvLqDGhspliKaWG"
                         @verify=onVerify />
                         <v-alert
                             v-model="captcha_validation"
