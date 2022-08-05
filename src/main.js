@@ -14,7 +14,7 @@ Vue.prototype.$http = axios;
 // Vue.prototype.$api = 'http://127.0.0.1:8000/api';
 
 /*Production */
-Vue.prototype.$api = 'https://be.bintang-group.co.id:8000/api'
+Vue.prototype.$api = 'http://be.bintang-group.co.id:8000/api'
 
 
 new Vue({
