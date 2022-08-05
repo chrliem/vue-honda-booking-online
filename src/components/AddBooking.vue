@@ -605,7 +605,7 @@ export default {
     name:'AddBooking',
     data (){ 
         return{
-            stepper: 4,
+            stepper: 1,
             load: false,
             snackbar: false,
             snackbar1: false,
