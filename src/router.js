@@ -29,13 +29,43 @@ const router = new VueRouter({
             name:"BookingDashboard",
             meta: {title:'Booking Dashboard'},
             component: importComponent('Admin/BookingDashboard'),
-        },        
+        },
+        {
+            path:'/it/login',
+            name: 'ITLogin',
+            meta: {title: 'Login'},
+            component: importComponent('IT/ITLogin'),
+        },
+        {
+            path:"/it/dashboard",
+            name:"UserDashboard",
+            meta: {title:'User Dashboard'},
+            component: importComponent('IT/UserDashboard'),
+        },                
     ]
 });
 
 router.beforeEach((to, from, next)=>{
     document.title = to.meta.title
     if(to.name === 'BookingDashboard' && localStorage.getItem('token')===null) next({ name: 'AdminLogin'})
+    else next()
+})
+
+router.beforeEach((to, from, next)=>{
+    document.title = to.meta.title
+    if(to.name === 'UserDashboard' && localStorage.getItem('token')===null) next({ name: 'ITLogin'})
+    else next()
+})
+
+router.beforeEach((to, from, next)=>{
+    document.title = to.meta.title
+    if(to.name === 'UserDashboard' && localStorage.getItem('token')!==null && localStorage.getItem('role')===2) next({ name: 'BookingDashboard'})
+    else next()
+})
+
+router.beforeEach((to, from, next)=>{
+    document.title = to.meta.title
+    if(to.name === 'BookingDashboard' && localStorage.getItem('token')!==null && localStorage.getItem('role')===1) next({ name: 'UserDashboard'})
     else next()
 })
 

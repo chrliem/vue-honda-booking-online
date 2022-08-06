@@ -511,7 +511,7 @@
               <v-btn
                 text
                 color="error"
-                @click="editDataDialog = false"
+                @click="close"
               >Tutup</v-btn>
               <v-btn text color="primary" @click="save">Simpan</v-btn>
             </v-card-actions>
@@ -578,7 +578,7 @@
             <v-card-actions class="justify-end">
               <v-btn
                 text
-                @click="editStatusDialog = false"
+                @click="close1"
               >Close</v-btn>
             <v-btn text color="primary" @click="saveStatus">Simpan</v-btn>
             </v-card-actions>
@@ -808,6 +808,9 @@ import moment from 'moment-timezone';
         logout(){
             localStorage.removeItem('nama')
             localStorage.removeItem('token')
+            localStorage.removeItem('role')
+            localStorage.removeItem('dealer')
+            localStorage.removeItem('nama_dealer')
             this.$router.push({name:'AdminLogin'})
         },
         readData(){
@@ -995,6 +998,14 @@ import moment from 'moment-timezone';
             }else if(item.status === 'Cancelled'){
                 return 'border: 3px solid #FF5252'
             }
+        },
+        close(){
+            this.editDataDialog = false
+            this.$refs.form.reset()
+        },
+        close1(){
+            this.editStatusDialog = false,
+            this.$refs.form.reset()
         }
 
     },

@@ -27,22 +27,12 @@
                     <v-toolbar
                     color="secondary"
                         dark
-                        ><h2>Login</h2></v-toolbar>
+                        ><h2>Login IT</h2></v-toolbar>
                                 <v-form v-model="valid" ref="form" class="mx-5 my-5">
                                     <v-text-field :rules="emailRules" v-model="form.email" label="Email" hint="username@email.com" prepend-inner-icon="mdi-account" outlined required></v-text-field>
                                     <v-text-field 
                                     :append-icon="show3 ? 'mdi-eye' : 'mdi-eye-off'" :type="show3 ? 'text' : 'password'" @click:append="show3 = !show3"
                                     :rules="passwordRules" v-model="form.password" label="Password" prepend-inner-icon="mdi-lock" outlined required></v-text-field>
-                                    <v-autocomplete
-                                        :rules="dealerRules"
-                                        v-model="form.id_dealer"
-                                        prepend-inner-icon="mdi-map-marker"
-                                        label="Dealer"
-                                        outlined
-                                        :items="dealer"
-                                        item-text="nama_dealer"
-                                        item-value="id_dealer"
-                                    ></v-autocomplete>
                                 </v-form>
                         <v-card-actions class="justify-end">
                             <v-btn text color="primary" @click="login">Login</v-btn>
@@ -80,12 +70,24 @@
             Close</v-btn>
             </template>
         </v-snackbar>
+        <v-snackbar elevation="24" v-model="snackbar2" :color="color" dark timeout="2000">
+            {{no_access_message}}
+            <template v-slot:action="{ attrs }">
+            <v-btn
+            color="white"
+            text
+            v-bind="attrs"
+            @click="snackbar1 = false"
+            >
+            Close</v-btn>
+            </template>
+        </v-snackbar>
     </v-app>
 </template>
 
 <script>
 export default {
-    name:'AdminLogin',
+    name:'ITLogin',
     data(){
         return{
             user: new FormData,
@@ -93,6 +95,8 @@ export default {
             alertEmpty: false,
             snackbar: false,
             snackbar1: false,
+            snackbar2: false,
+            role: 1,
             form:{
                 nama: '',
                 email: '',
@@ -106,13 +110,6 @@ export default {
             passwordRules: [
                 (v) => !!v || 'Password harus diisi'
             ],
-            dealerRules: [
-                (v) => !!v || 'Dealer harus diisi'
-            ],
-            dealer: [{
-                id_dealer: '',
-                nama_dealer: ''
-           }],
            response_message:'',
            error_message:''
         }
@@ -122,25 +119,33 @@ export default {
             if(this.$refs.form.validate()){
                 this.$http.post(this.$api+'/login',{
                 email: this.form.email,
-                password: this.form.password
+                password: this.form.password, 
             }).then(response =>{
-                this.response_message = response.data.message;
+                
                 localStorage.setItem('nama',response.data.data.nama)
                 localStorage.setItem('token', response.data.access_token)
-                localStorage.setItem('dealer', this.form.id_dealer)
-                localStorage.setItem('role',2)
-                for(let i=0; i<this.dealer.length; i++){
-                    console.log(this.dealer.length)
-                    if(this.dealer[i].id_dealer===this.form.id_dealer)
-                    localStorage.setItem('nama_dealer', this.dealer[i].nama_dealer)
-
+                localStorage.setItem('role', response.data.data.id_role)
+                
+                if(localStorage.getItem('role')==1){
+                    this.response_message = response.data.message;
+                    this.snackbar1 = true
+                    this.color = 'secondary'
+                    this.$router.push({
+                        name: 'UserDashboard'
+                    })
+                }else if(localStorage.getItem('role')!=1){
+                    console.log(localStorage.getItem('role'))
+                    localStorage.removeItem('nama')
+                    localStorage.removeItem('token')
+                    localStorage.removeItem('role')
+                    this.snackbar2 = true
+                    this.color = 'warning'
+                    this.no_access_message = 'Anda tidak memiliki akses'
+                    setTimeout(function(){
+                        window.location.reload(1);
+                    }, 3000);
                 }
-                console.log(localStorage.getItem('nama_dealer'))
-                this.snackbar1 = true
-                this.color = 'secondary'
-                this.$router.push({
-                    name: 'BookingDashboard'
-                })
+                
             }).catch(error => {
                 this.error_message = error.response.data.message
                 this.snackbar = true
@@ -151,26 +156,11 @@ export default {
         },
         resetForm(){
             this.form = {
-                nama: '',
                 email: '',
                 password: '',
-                dealer: ''
             }
         },
-        getDataDealer(){
-            var url = this.$api+'/dealer'
-                this.$http.get(url,{
-                    headers:{
-
-                    }
-                }).then(response=>{
-                    this.dealer = response.data.data
-                })
-        },
     },
-    mounted(){
-        this.getDataDealer();
-    }
 }
 </script>
 
