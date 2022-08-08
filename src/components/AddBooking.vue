@@ -18,6 +18,21 @@
         </v-toolbar-title>
         <v-toolbar-title class="ml-4 hidden-sm-and-down">Booking Service</v-toolbar-title>
         <v-toolbar-title class="ml-5 hidden-md-and-up">Booking Service</v-toolbar-title>
+        <v-spacer></v-spacer>
+        <v-toolbar-title>
+            <img
+                class="mt-2 hidden-sm-and-down"
+                src="@/assets/bintang-group-logo.png"
+                height="50px"
+                contain
+            >
+            <img
+                class="mt-1 mx-3 hidden-md-and-up"
+                src="@/assets/bintang-group-logo.png"
+                height="30px"
+                contain
+            >
+        </v-toolbar-title>
     </v-app-bar>
 
     <!-- Section Banner 
@@ -31,9 +46,9 @@
     </section> -->
 
     <!-- Section Form Booking -->
-    <v-container fluid class="background">
+    <v-container fluid class="background mt-n2">
         <v-layout justify-center class="ma-md-12 ma-sm-5">
-        <v-stepper v-model="stepper" color="#f5f5f5" vertical elevation="24"  class="ma-md-3">
+        <v-stepper v-model="stepper" color="#f5f5f5" vertical elevation="24"  class="mt-md-10 mb-md-12 mx-md-16">
             <v-stepper-step :complete="stepper > 1" step="1">
                 Ketentuan Booking Service
             </v-stepper-step>
@@ -467,14 +482,14 @@
         <v-footer
             dark
             padless
-            class="mt-10"
+            class="mt-8"
             width="100%"
         >
             <v-card
             flat
             tile
             class="white--text text-center"
-            color="secondary"
+            color="blue-grey darken-1"
             width="100%"
             >
             <v-card-text class="white--text">
@@ -550,8 +565,20 @@
                 </v-btn>
             </v-row>
             <v-divider></v-divider><br>
-            <img class="hidden-md-and-down" position="center center" width="7%" src="https://hondasukunmalang.co.id/wp-content/uploads/2022/07/HSM.png">
-            <img class="hidden-sm-and-up" position="center center" width="20%" src="https://hondasukunmalang.co.id/wp-content/uploads/2022/07/HSM.png">
+            <!-- <img class="hidden-md-and-down" position="center center" width="7%" src="https://hondasukunmalang.co.id/wp-content/uploads/2022/07/HSM.png">
+            <img class="hidden-sm-and-up" position="center center" width="20%" src="https://hondasukunmalang.co.id/wp-content/uploads/2022/07/HSM.png"> -->
+            <img
+                class="mt-2 hidden-sm-and-down"
+                src="@/assets/bintang-group-logo.png"
+                height="50px"
+                contain
+            >
+            <img
+                class="mt-1 hidden-md-and-up"
+                src="@/assets/bintang-group-logo.png"
+                height="30px"
+                contain
+            >
 
             <v-card-text class="white--text">
                 {{ new Date().getFullYear() }} — <strong>Honda Bintang Group</strong>
@@ -798,6 +825,7 @@ export default {
 .background{
     width: 100%;
     height: 100%;
+    margin-top: 0;
     left: 0;
     background: url( 'https://www.hondasolobaru.co.id/wp-content/uploads/2022/08/download-2.png') no-repeat center center;
     background-size: cover;

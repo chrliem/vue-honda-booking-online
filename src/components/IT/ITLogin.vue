@@ -18,7 +18,20 @@
             <v-toolbar-title class="ml-4 hidden-sm-and-down">Booking Service</v-toolbar-title>
             <v-toolbar-title class="ml-5 hidden-md-and-up">Booking Service</v-toolbar-title>
             <v-spacer></v-spacer>
-            <v-toolbar-title>Welcome </v-toolbar-title>
+            <v-toolbar-title>
+                <img
+                class="mt-2 hidden-sm-and-down"
+                src="@/assets/bintang-group-logo.png"
+                height="50px"
+                contain
+            >
+            <img
+                class="mt-1 mx-3 hidden-md-and-up"
+                src="@/assets/bintang-group-logo.png"
+                height="30px"
+                contain
+            >
+            </v-toolbar-title>
         </v-app-bar>
         <v-container fluid fill-height class="custom-container">
             <v-layout flex align-center justify-center>
