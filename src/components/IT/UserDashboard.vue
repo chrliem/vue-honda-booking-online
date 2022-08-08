@@ -191,6 +191,9 @@
                 editId: '',
                 users: [],
                 search: null,
+                color: '',
+                response_message:'',
+                error_message: '',
                 show3:'',
                 dealer: [],
                 role: [{id:1, role:'IT'},{id:2, role:'CCO'}],
@@ -221,6 +224,7 @@
                     {text: "Nama", value:"nama"},
                     {text: "Alamat Email", value: "email"},
                     {text: "Dealer", value: "nama_dealer"},
+                    {text: 'Role', value: 'role'},
                     {text: "Actions", value:'actions'}
                 ],
             }
