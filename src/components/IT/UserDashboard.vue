@@ -162,7 +162,16 @@
     </template>
 
     <v-snackbar v-model="snackbar1" elevation="24" :color="color" timeout="5000" bottom>
-            {{response_message}}
+            <!-- {{response_message}} -->
+            <v-layout align-center pr-4>
+             <v-icon class="pr-3" dark large>{{ icon_message }}</v-icon>
+                <v-layout column>
+                    <div>
+                        <strong>{{ title_message }}</strong>
+                    </div>
+                    <div>{{ response_message }}</div>
+                </v-layout>
+            </v-layout>
             <template v-slot:action="{ attrs }">
                         <v-btn
                         color="white"
@@ -175,13 +184,22 @@
         </v-snackbar>
 
         <v-snackbar v-model="snackbar" :color="color" timeout="2000" bottom>
-            {{error_message}}
+            <!-- {{error_message}} -->
+            <v-layout align-center pr-4>
+             <v-icon class="pr-3" dark large>{{ icon_message }}</v-icon>
+                <v-layout column>
+                    <div>
+                        <strong>{{ title_message }}</strong>
+                    </div>
+                    <div>{{ error_message }}</div>
+                </v-layout>
+            </v-layout>
             <template v-slot:action="{ attrs }">
             <v-btn
             color="white"
             text
             v-bind="attrs"
-            @click="snackbar2 = false"
+            @click="snackbar = false"
             >
             Close</v-btn>
             </template>
@@ -266,14 +284,18 @@
                     }
                 }).then(response=>{
                     this.response_message = response.data.message
+                    this.color = 'blue-grey darken-1'
                     this.snackbar1 = true
-                    this.color = 'success'
+                    this.icon_message = 'mdi-check-decagram'
+                    this.title_message = 'Success'
                     this.close()
                     this.readData()
                 }).catch(error=>{
                     this.error_message = error.response.data.message
-                    this.color = 'red'
+                    this.color = 'warning'
                     this.snackbar = true
+                    this.icon_message = 'mdi-alert-decagram'
+                    this.title_message = 'Error'
                 })
             },
             savePassword(){
@@ -286,14 +308,18 @@
                         }
                     }).then(response=>{
                         this.response_message = response.data.message
-                        this.color = 'secondary'
+                        this.color = 'blue-grey darken-1'
                         this.snackbar1 = true
+                        this.icon_message = 'mdi-check-decagram'
+                        this.title_message = 'Success'
                         this.close1()
                         this.readData()                        
                     }).catch(error=>{
                         this.error_message = error.response.data.message;
                         this.color = 'warning'
                         this.snackbar = true
+                        this.icon_message = 'mdi-alert-decagram'
+                        this.title_message = 'Error'
                     })
             },
             deleteData(){
@@ -304,14 +330,18 @@
                     }
                 }).then(response => {
                     this.response_message = response.data.message;
-                    this.color = 'success'
+                    this.color = 'blue-grey darken-1'
                     this.snackbar1 = true
+                    this.icon_message = 'mdi-check-decagram'
+                    this.title_message = 'Success'
                     this.close2()
                     this.readData()
                 }).catch(error=>{
                     this.error_message = error.response.data.message;
-                    this.color = 'error'
+                    this.color = 'warning'
                     this.snackbar = true
+                    this.icon_message = 'mdi-alert-decagram'
+                    this.title_message = 'Error'
                     this.load = false
                 });
             },

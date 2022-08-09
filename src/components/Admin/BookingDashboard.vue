@@ -262,7 +262,7 @@
                                 </tr>
                                 <tr>
                                     <td>{{ item.keterangan_customer }}</td>
-                                    <td>{{ item.keterangan_cco }} </td>
+                                    <td v-show="item.keterangan_cco!==''">{{ item.keterangan_cco }} </td>
                                 </tr>
                             </tbody>
                         </v-simple-table>
@@ -602,30 +602,50 @@
 
         </template>
         
-        <v-snackbar elevation="24" v-model="snackbar" :color="color" timeout="2000" bottom>
-           <div v-for="(errorArray, index) in error_message" :key="index">
-                <div v-for="(error_message,  index) in errorArray" :key="index">
-                    {{error_message}}
-                </div>
-            </div>
+        <v-snackbar elevation="24" v-model="snackbar" :color="color" timeout="4000" bottom>
+           
+            <v-layout align-center pr-4>
+             <v-icon class="pr-3" dark large>{{ icon_message }}</v-icon>
+                <v-layout column>
+                    <div>
+                        <strong>{{ title_message }}</strong>
+                    </div>
+                    <div>
+                        <div v-for="(errorArray, index) in error_message" :key="index">
+                            <div v-for="(error_message,  index) in errorArray" :key="index">
+                                {{error_message}}
+                            </div>
+                        </div>
+                    </div>
+                </v-layout>
+            </v-layout>
             <template v-slot:action="{ attrs }">
                         <v-btn
                         color="white"
                         text
                         v-bind="attrs"
-                        @click="snackbar1 = false"
+                        @click="snackbar = false"
                         >
                         Close</v-btn>
                     </template>
         </v-snackbar>
-        <v-snackbar elevation="24" v-model="snackbar1" :color="color" dark timeout="2000">
-            {{response_message}}
+        <v-snackbar elevation="24" v-model="snackbar1" :color="color" dark timeout="4000">
+            <!-- {{response_message}} -->
+            <v-layout align-center pr-4>
+             <v-icon class="pr-3" dark large>{{ icon_message }}</v-icon>
+                <v-layout column>
+                    <div>
+                        <strong>{{ title_message }}</strong>
+                    </div>
+                    <div>{{ response_message }}</div>
+                </v-layout>
+            </v-layout>
             <template v-slot:action="{ attrs }">
             <v-btn
-            color="white"
-            text
-            v-bind="attrs"
-            @click="snackbar1 = false"
+                color="white"
+                text
+                v-bind="attrs"
+                @click="snackbar1 = false"
             >
             Close</v-btn>
             </template>
@@ -655,6 +675,8 @@ import moment from 'moment-timezone';
         editId: '',
         editDataDialog: false,
         editStatusDialog: false,
+        icon_message:'',
+        title_message:'',
         error_message: '',
         response_message: '',
         dialog: true,
@@ -777,22 +799,6 @@ import moment from 'moment-timezone';
         statusRules: [
             (v) => !!v || 'Status harus dipilih'
         ],
-        // headers: [
-        //     {text: "Kode Booking", value:"kode_booking"},
-        //     {text: "Nama Customer", value:"nama_customer"},
-        //     {text: "Email Customer", value:"email_customer"},
-        //     {text: "No HP", value:"no_handphone"},
-        //     {text: "No. Polisi", value:"no_polisi"},
-        //     {text: "Model Kendaraan", value:"id_kendaraan"},
-        //     {text: "Jenis Transmisi", value:"jenis_transmisi"},
-        //     {text: "Dealer", value:"id_dealer"},
-        //     {text: "Tanggal Service", value:"tgl_booking"},
-        //     {text: "Pekerjaan", value:"jenis_pekerjaan"},
-        //     {text: "Layanan", value:"jenis_layanan"},
-        //     {text: "Keterangan Customer", value:"keterangan_customer"},
-        //     {text: "Status Booking", value:"status"},
-        //     {text: "Keterangan CCO", value:"keterangan_cco"}
-        // ]
       } 
     },
     computed: {
@@ -921,8 +927,10 @@ import moment from 'moment-timezone';
                         }
                     }).then(response=>{
                         this.response_message = response.data.message
-                        this.color = 'secondary'
+                        this.color = 'blue-grey darken-1'
                         this.snackbar1 = true
+                        this.icon_message = 'mdi-check-decagram'
+                        this.title_message = 'Success'
                         this.editDataDialog = false
                         this.readData()
                         
@@ -930,6 +938,8 @@ import moment from 'moment-timezone';
                         this.error_message = error.response.data.message;
                         this.color = 'warning'
                         this.snackbar = true
+                        this.icon_message = 'mdi-alert-decagram'
+                        this.title_message = 'Error'
                     })
 
                 }else{
@@ -953,8 +963,10 @@ import moment from 'moment-timezone';
                         }
                     }).then(response=>{
                         this.response_message = response.data.message
-                        this.color = 'secondary'
+                        this.color = 'blue-grey darken-1'
                         this.snackbar1 = true
+                        this.icon_message = 'mdi-check-decagram'
+                        this.title_message = 'Success'
                         this.editDataDialog = false
                         this.readData()
                         
@@ -962,31 +974,64 @@ import moment from 'moment-timezone';
                         this.error_message = error.response.data.message;
                         this.color = 'warning'
                         this.snackbar = true
+                        this.icon_message = 'mdi-alert-decagram'
+                        this.title_message = 'Error'
                     })
                 }
             }
         },
         saveStatus(){
             if(this.$refs.form1.validate()){
-                this.updateBooking.append('status', this.form.status)
-                this.updateBooking.append('keterangan_cco', this.form.keterangan_cco)
-                var url = this.$api+'/booking-status/'+this.editId
-                this.$http.post(url, this.updateBooking, {
-                    headers: {
-                        'Authorization':'Bearer '+localStorage.getItem('token')
-                    }
-                }).then(response=>{
-                    this.response_message = response.data.message
-                    this.color = 'secondary'
-                    this.snackbar1 = true
-                    this.editStatusDialog = false
-                    this.readData()
-                    
-                }).catch(error=>{
-                    this.error_message = error.response.data.message;
-                    this.color = 'warning'
-                    this.snackbar = true
-                })
+                if(this.form.keterangan_cco===null){
+                    this.updateBooking.append('status', this.form.status)
+                    this.updateBooking.append('keterangan_cco', '')
+                    var url = this.$api+'/booking-status/'+this.editId
+                    this.$http.post(url, this.updateBooking, {
+                        headers: {
+                            'Authorization':'Bearer '+localStorage.getItem('token')
+                        }
+                    }).then(response=>{
+                        this.response_message = response.data.message
+                        this.color = 'blue-grey darken-1'
+                        this.snackbar1 = true
+                        this.icon_message = 'mdi-check-decagram'
+                        this.title_message = 'Success'
+                        this.editStatusDialog = false
+                        this.readData()
+                        
+                    }).catch(error=>{
+                        this.error_message = error.response.data.message;
+                        this.color = 'warning'
+                        this.snackbar = true
+                        this.icon_message = 'mdi-alert-decagram'
+                        this.title_message = 'Error'
+                    })
+                }else{
+                    this.updateBooking.append('status', this.form.status)
+                    this.updateBooking.append('keterangan_cco', this.form.keterangan_cco)
+                    var url = this.$api+'/booking-status/'+this.editId
+                    this.$http.post(url, this.updateBooking, {
+                        headers: {
+                            'Authorization':'Bearer '+localStorage.getItem('token')
+                        }
+                    }).then(response=>{
+                        this.response_message = response.data.message
+                        this.color = 'blue-grey darken-1'
+                        this.snackbar1 = true
+                        this.icon_message = 'mdi-check-decagram'
+                        this.title_message = 'Success'
+                        this.editStatusDialog = false
+                        this.readData()
+                        
+                    }).catch(error=>{
+                        this.error_message = error.response.data.message;
+                        this.color = 'warning'
+                        this.snackbar = true
+                        this.icon_message = 'mdi-alert-decagram'
+                        this.title_message = 'Error'
+                    })
+                }
+                
             }
         },
         formatDate(date){

@@ -68,20 +68,38 @@
             </v-layout>
         </v-container>
 
-        <v-snackbar elevation="24" v-model="snackbar" :color="color" timeout="2000" bottom>
-                    {{error_message}}
+        <v-snackbar elevation="24" v-model="snackbar" :color="color" timeout="4000" bottom>
+                    <!-- {{error_message}} -->
+            <v-layout align-center pr-4>
+             <v-icon class="pr-3" dark large>{{ icon_message }}</v-icon>
+                <v-layout column>
+                    <div>
+                        <strong>{{ title_message }}</strong>
+                    </div>
+                    <div>{{ error_message }}</div>
+                </v-layout>
+            </v-layout>
             <template v-slot:action="{ attrs }">
-                        <v-btn
-                        color="white"
-                        text
-                        v-bind="attrs"
-                        @click="snackbar1 = false"
-                        >
-                        Close</v-btn>
-                    </template>
+                <v-btn
+                color="white"
+                text
+                v-bind="attrs"
+                @click="snackbar1 = false"
+                >
+                Close</v-btn>
+            </template>
         </v-snackbar>
-        <v-snackbar elevation="24" v-model="snackbar1" :color="color" dark timeout="2000">
-            {{response_message}}
+        <v-snackbar elevation="24" v-model="snackbar1" :color="color" dark timeout="4000">
+            <!-- {{response_message}} -->
+            <v-layout align-center pr-4>
+             <v-icon class="pr-3" dark large>{{ icon_message }}</v-icon>
+                <v-layout column>
+                    <div>
+                        <strong>{{ title_message }}</strong>
+                    </div>
+                    <div>{{ response_message }}</div>
+                </v-layout>
+            </v-layout>
             <template v-slot:action="{ attrs }">
             <v-btn
             color="white"
@@ -105,6 +123,8 @@ export default {
             alertEmpty: false,
             snackbar: false,
             snackbar1: false,
+            color:'',
+            valid:'',
             form:{
                 nama: '',
                 email: '',
@@ -148,15 +168,19 @@ export default {
 
                 }
                 console.log(localStorage.getItem('nama_dealer'))
+                this.color = 'blue-grey darken-1'
                 this.snackbar1 = true
-                this.color = 'secondary'
+                this.icon_message = 'mdi-check-decagram'
+                this.title_message = 'Success'
                 this.$router.push({
                     name: 'BookingDashboard'
                 })
             }).catch(error => {
                 this.error_message = error.response.data.message
-                this.snackbar = true
                 this.color = 'warning'
+                this.snackbar = true
+                this.icon_message = 'mdi-alert-decagram'
+                this.title_message = 'Error'
                 localStorage.removeItem('token')
             })
             }

@@ -599,6 +599,44 @@
                     </template>
         </v-snackbar>
 
+        <template>
+        <div class="text-center">
+            <v-layout flex align-center justify-center>
+                <v-dialog
+                v-model="successful_dialog"
+                width="500"
+                >
+                    <v-card class="justify-center">
+                        <v-card-title class="blue-grey darken-1 justify-center">
+                            <img
+                                src="@/assets/success_icon.png"
+                                contain
+                                height="150px"
+                            >
+                        </v-card-title>
+
+                        <p class="mx-4 mt-4"> {{ response_message }} <br>
+                        Anda akan segera dihubungi oleh Staff Booking Service kami! </p>
+
+
+                        <v-divider></v-divider>
+
+                        <v-card-actions class="justify-center">
+                        <v-btn
+                            color="primary"
+                            text
+                            @click="reload"
+                        >
+                            Continue
+                        </v-btn>
+                        </v-card-actions>
+                    </v-card>
+                </v-dialog>
+            </v-layout>
+        </div>
+        </template>
+
+
         <v-snackbar v-model="snackbar2" :color="color" timeout="2000" bottom>
             {{error_message}}
             <template v-slot:action="{ attrs }">
@@ -640,6 +678,7 @@ export default {
             captcha_validation: false,
             error_message: '',
             response_message: '',
+            successful_dialog: false,
             error_captcha: '',
             color: '',
             offers_checkbox: false,
@@ -800,17 +839,20 @@ export default {
                 }
             }).then(response=>{
                 this.response_message = response.data.message
-                this.snackbar1 = true
-                this.color = 'success'
+                this.successful_dialog = true
                 this.$refs.recaptcha.reset()
-                setTimeout(function(){
-                    window.location.reload(1);
-                }, 3000);
+                // setTimeout(function(){
+                //     window.location.reload(1);
+                // }, 3000);
             }).catch(error=>{
                 this.error_message = error.response.data.message
                 this.color = 'red'
                 this.snackbar = true
             })
+        },
+        reload(){
+            this.successful_dialog.false
+            window.location.reload()
         }
     },
     mounted(){
