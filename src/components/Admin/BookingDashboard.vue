@@ -164,6 +164,18 @@
                 </template>
                 
                 <template v-slot:default="props">
+                    <v-card v-show="countAll===1" flat>
+                        <v-card-title class="justify-center">
+                            <img
+                                src="@/assets/no-data.png"
+                                contain
+                                height="150px"
+                            >
+                        </v-card-title>
+                        <v-card-title class="justify-center">
+                            Belum ada data
+                        </v-card-title>
+                    </v-card>
                     <v-row>
                     <v-col
                         v-for="item in props.items"  
@@ -173,7 +185,7 @@
                         md="4"
                         lg="4"
                     >
-                        <v-card :style="isStatus(item)">
+                        <v-card v-show="countAll>1" :style="isStatus(item)">
                             <v-toolbar color="secondary" dark>
                                 <v-chip label color="blue-grey darken-1">{{ item.kode_booking }}</v-chip>
                                 <v-spacer></v-spacer>
@@ -307,6 +319,7 @@
                     </v-col>
                     </v-row>                 
                 </template>
+                
                 <template v-slot:footer>
                     <v-toolbar color="secondary" dark class="mt-5">
                         <v-row
@@ -821,10 +834,16 @@ import moment from 'moment-timezone';
             return this.bookings.filter((i) => i.status === 'Cancelled' && i.id_dealer==localStorage.getItem('dealer')).length
         },
         numberOfPages () {
-        return Math.ceil(this.filteredData.length / this.itemsPerPage)
-      },
+            return Math.ceil(this.filteredData.length / this.itemsPerPage)
+        },
+        countAll(){
+            return this.filteredData.length
+        }
+
+      
     },
     methods:{
+        
         logout(){
             localStorage.removeItem('nama')
             localStorage.removeItem('token')
