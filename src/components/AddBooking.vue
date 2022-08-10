@@ -1,6 +1,5 @@
 <template>
   <v-app>
-
         <v-app-bar app height="80">
         <v-toolbar-title>
             <img
@@ -27,7 +26,7 @@
                 contain
             >
             <img
-                class="mt-1 mx-3 hidden-md-and-up"
+                class="mt-1 hidden-md-and-up"
                 src="@/assets/bintang-group-logo.png"
                 height="30px"
                 contain
@@ -46,8 +45,8 @@
     </section> -->
 
     <!-- Section Form Booking -->
-    <v-container fluid class="background mt-n2">
-        <v-layout justify-center class="ma-md-12 ma-sm-5">
+    <v-container fluid class="background mt-n10 mb-n8">
+        <v-layout justify-center class="ma-md-12 mx-sm-5">
         <v-stepper v-model="stepper" color="#f5f5f5" vertical elevation="24"  class="mt-md-10 mb-md-12 mx-md-16">
             <v-stepper-step :complete="stepper > 1" step="1">
                 Ketentuan Booking Service
@@ -488,7 +487,7 @@
             <v-card
             flat
             tile
-            class="white--text text-center"
+            class="white--text text-center .d-flex"
             color="blue-grey darken-1"
             width="100%"
             >
@@ -865,12 +864,7 @@ export default {
 
 <style>
 .background{
-    width: 100%;
-    height: 100%;
-    margin-top: 0;
-    left: 0;
     background: url( 'https://www.hondasolobaru.co.id/wp-content/uploads/2022/08/download-2.png') no-repeat center center;
     background-size: cover;
-    transform: scale(1.1);
   }
 </style>
