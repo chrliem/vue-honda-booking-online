@@ -481,10 +481,12 @@
             padless
             class="mt-8"
             width="100%"
+            elevation="24"
         >
             <v-card
             flat
             tile
+            elevation="24"
             class="white--text text-center .d-flex"
             color="blue-grey darken-1"
             width="100%"
