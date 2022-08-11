@@ -95,17 +95,7 @@
                                 item-value="id_kendaraan"
                                 outlined
                             ></v-autocomplete>
-                            <v-autocomplete
-                                class="hidden-lg-and-up"
-                                prepend-inner-icon="mdi-car-clutch"
-                                :rules="transmisiRules"
-                                v-model="form.jenis_transmisi"
-                                label="Jenis Transmisi"
-                                :items="transmisi"
-                                item-text="jenis_transmisi"
-                                item-value="jenis_transmisi"
-                                outlined
-                            ></v-autocomplete>
+                        <v-text-field class="hidden-lg-and-up" :rules="noRangkaRules" v-model="form.no_rangka" label="Nomor Rangka/VIN" prepend-inner-icon="mdi-car-search" hint="Nomor rangka dapat ditemukan di STNK" outlined></v-text-field>
                         <v-row class="hidden-md-and-down">
                             <v-col cols="12" md="6">
                             <v-autocomplete
@@ -120,16 +110,7 @@
                             ></v-autocomplete>
                         </v-col>
                         <v-col cols="12" md="6">
-                            <v-autocomplete
-                                prepend-inner-icon="mdi-car-clutch"
-                                :rules="transmisiRules"
-                                v-model="form.jenis_transmisi"
-                                label="Jenis Transmisi"
-                                :items="transmisi"
-                                item-text="jenis_transmisi"
-                                item-value="jenis_transmisi"
-                                outlined
-                            ></v-autocomplete>
+                            <v-text-field :rules="noRangkaRules" v-model="form.no_rangka" label="Nomor Rangka/VIN" prepend-inner-icon="mdi-car-search" hint="Nomor rangka dapat ditemukan di STNK" outlined></v-text-field>
                         </v-col>
                         </v-row>        
                     </v-form>
@@ -402,8 +383,8 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td class="text-left"><strong>Jenis Transmisi</strong></td>
-                                    <td class="text-left">{{ form.jenis_transmisi }}</td>
+                                    <td class="text-left"><strong>Nomor Rangka</strong></td>
+                                    <td class="text-left">{{ form.no_rangka }}</td>
                                 </tr>
                                 <tr>
                                     <td class="text-left"><strong>Dealer</strong></td>
@@ -706,8 +687,8 @@ export default {
             kendaraanRules: [
                 (v) => !!v || 'Model kendaraan harus diisi',
             ],
-            transmisiRules: [
-                (v) => !!v || 'Jenis transmisi harus diisi',
+            noRangkaRules: [
+                (v) => !!v || 'Nomor rangka harus diisi',
             ],
             dealerRules: [
                 (v) => !!v || 'Dealer harus diisi',
@@ -734,7 +715,7 @@ export default {
                 no_handphone: '',
                 no_polisi: '',
                 id_kendaraan: '',
-                jenis_transmisi: '',
+                no_rangka: '',
                 id_dealer: '',
                 tgl_service: '',
                 jam_service:'',
@@ -743,15 +724,10 @@ export default {
                 keterangan_customer: '',
                 captcha: false
             },
-            
            kendaraan: [{
                 id_kendaraan: '',
                 model_kendaraan: ''
            }],
-           transmisi: [
-                { jenis_transmisi: 'Automatic'},
-                { jenis_transmisi: 'Manual'}
-            ],
            dealer: [{
                 id_dealer: '',
                 nama_dealer: ''
@@ -832,7 +808,7 @@ export default {
             this.booking.append('no_polisi', this.form.no_polisi)
             this.booking.append('id_dealer', this.form.id_dealer)
             this.booking.append('id_kendaraan', this.form.id_kendaraan)
-            this.booking.append('jenis_transmisi', this.form.jenis_transmisi)
+            this.booking.append('no_rangka', this.form.no_rangka)
             this.booking.append('tgl_service',formatted_tgl_service)
             this.booking.append('jenis_pekerjaan', this.form.jenis_pekerjaan)
             this.booking.append('jenis_layanan', this.form.jenis_layanan)

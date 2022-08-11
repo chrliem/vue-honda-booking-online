@@ -164,7 +164,7 @@
                 </template>
                 
                 <template v-slot:default="props">
-                    <v-card v-show="countAll===1" flat>
+                    <v-card v-show="isEmpty" flat>
                         <v-card-title class="justify-center">
                             <img
                                 src="@/assets/no-data.png"
@@ -185,7 +185,7 @@
                         md="4"
                         lg="4"
                     >
-                        <v-card v-show="countAll>1" :style="isStatus(item)">
+                        <v-card v-show="isEmpty===false" :style="isStatus(item)">
                             <v-toolbar color="secondary" dark>
                                 <v-chip label color="blue-grey darken-1">{{ item.kode_booking }}</v-chip>
                                 <v-spacer></v-spacer>
@@ -248,8 +248,8 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td><strong>Jenis Transmisi</strong></td>
-                                    <td>{{ item.jenis_transmisi }}</td>
+                                    <td><strong>Nomor Rangka</strong></td>
+                                    <td>{{ item.no_rangka }}</td>
                                 </tr>
                                 <tr>
                                     <td><strong>Dealer</strong></td>
@@ -414,16 +414,7 @@
                             ></v-autocomplete>
                         </v-col>
                         <v-col cols="12" md="6">
-                            <v-autocomplete
-                                prepend-inner-icon="mdi-car-clutch"
-                                :rules="transmisiRules"
-                                v-model="form.jenis_transmisi"
-                                label="Jenis Transmisi"
-                                :items="transmisi"
-                                item-text="jenis_transmisi"
-                                item-value="jenis_transmisi"
-                                outlined
-                            ></v-autocomplete>
+                            <v-text-field :rules="noRangkaRules" v-model="form.no_rangka" label="Nomor Rangka/VIN" prepend-inner-icon="mdi-car-search" hint="Nomor rangka dapat ditemukan di STNK" outlined></v-text-field>
                         </v-col>
                     </v-row>        
                     <v-row class="mt-n7">
@@ -682,6 +673,7 @@ import moment from 'moment-timezone';
     name:'BookingDashboard',
     data () {
       return {
+        isEmpty: true,
         tab: null,
         snackbar: false,
         snackbar1: false,
@@ -719,7 +711,7 @@ import moment from 'moment-timezone';
             no_handphone: '',
             no_polisi:'',
             model_kendaraan: '',
-            jenis_transmisi: '',
+            no_rangka: '',
             nama_dealer: '',
             tgl_service:'',
             jenis_pekerjaan:'',
@@ -736,7 +728,7 @@ import moment from 'moment-timezone';
                 no_handphone: '',
                 no_polisi: '',
                 model_kendaraan: '',
-                jenis_transmisi: '',
+                no_rangka: '',
                 nama_dealer: '',
                 tgl_service: '',
                 jam_service:'',
@@ -750,10 +742,6 @@ import moment from 'moment-timezone';
                 id_kendaraan: '',
                 model_kendaraan: ''
         }],
-        transmisi: [
-            { jenis_transmisi: 'Automatic'},
-            { jenis_transmisi: 'Manual'}
-        ],
         dealer: [{
             id_dealer: '',
             nama_dealer: ''
@@ -791,8 +779,8 @@ import moment from 'moment-timezone';
         kendaraanRules: [
             (v) => !!v || 'Model kendaraan harus diisi',
         ],
-        transmisiRules: [
-            (v) => !!v || 'Jenis transmisi harus diisi',
+        noRangkaRules: [
+            (v) => !!v || 'Nomor rangka harus diisi',
         ],
         dealerRules: [
             (v) => !!v || 'Dealer harus diisi',
@@ -836,10 +824,6 @@ import moment from 'moment-timezone';
         numberOfPages () {
             return Math.ceil(this.filteredData.length / this.itemsPerPage)
         },
-        countAll(){
-            return this.filteredData.length
-        }
-
       
     },
     methods:{
@@ -860,6 +844,9 @@ import moment from 'moment-timezone';
                 }
             }).then(response=>{
                 this.bookings = response.data.data
+                this.isEmpty = false
+            }).catch(error=>{
+                this.isEmpty = true
             })
         },
         getBookingLog(){
@@ -905,7 +892,7 @@ import moment from 'moment-timezone';
             this.form.no_handphone = item.no_handphone
             this.form.no_polisi = item.no_polisi
             this.form.model_kendaraan = item.id_kendaraan
-            this.form.jenis_transmisi = item.jenis_transmisi
+            this.form.no_rangka = item.no_rangka
             this.form.nama_dealer = item.id_dealer
             this.form.tgl_service = item.tgl_service.substring(0,10)
             this.form.jam_service = item.tgl_service.substring(11,16)
@@ -932,7 +919,7 @@ import moment from 'moment-timezone';
                     this.updateBooking.append('no_polisi', this.form.no_polisi)
                     this.updateBooking.append('id_dealer', this.form.nama_dealer)
                     this.updateBooking.append('id_kendaraan', this.form.model_kendaraan)
-                    this.updateBooking.append('jenis_transmisi', this.form.jenis_transmisi)
+                    this.updateBooking.append('no_rangka', this.form.no_rangka)
                     var formatted_tgl_service = this.form.tgl_service+' '+this.form.jam_service
                     this.updateBooking.append('tgl_service',formatted_tgl_service)
                     this.updateBooking.append('jenis_pekerjaan', this.form.jenis_pekerjaan)
@@ -968,7 +955,7 @@ import moment from 'moment-timezone';
                     this.updateBooking.append('no_polisi', this.form.no_polisi)
                     this.updateBooking.append('id_dealer', this.form.nama_dealer)
                     this.updateBooking.append('id_kendaraan', this.form.model_kendaraan)
-                    this.updateBooking.append('jenis_transmisi', this.form.jenis_transmisi)
+                    this.updateBooking.append('no_rangka', this.form.no_rangka)
                     var formatted_tgl_service = this.form.tgl_service+' '+this.form.jam_service
                     this.updateBooking.append('tgl_service',formatted_tgl_service)
                     this.updateBooking.append('jenis_pekerjaan', this.form.jenis_pekerjaan)
