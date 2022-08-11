@@ -782,7 +782,7 @@ import moment from 'moment-timezone';
         ],
         noHPRules: [
             (v) => !!v || 'Nomor handphone harus diisi',
-            (v) => /^(\+62|62|0)8[1-9][0-9]{6,9}$/.test(v) || "Nomor handphone invalid"
+            (v) => /^(\+62|62|0)8[1-9][0-9]{6,10}$/.test(v) || "Nomor handphone invalid"
         ],
         noPolisiRules: [
             (v) => !!v || 'Nomor polisi harus diisi',

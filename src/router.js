@@ -37,11 +37,17 @@ const router = new VueRouter({
             component: importComponent('IT/ITLogin'),
         },
         {
-            path:"/it/dashboard",
+            path:"/it/user-dashboard",
             name:"UserDashboard",
             meta: {title:'User Dashboard'},
             component: importComponent('IT/UserDashboard'),
-        },                
+        },       
+        {
+            path:"/it/whatsapp-dashboard",
+            name:"WhatsappDashboard",
+            meta: {title:'Whatsapp Dashboard'},
+            component: importComponent('IT/WhatsappDashboard'),
+        },              
     ]
 });
 

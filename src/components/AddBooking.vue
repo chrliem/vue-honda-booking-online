@@ -446,6 +446,7 @@
                     label="Saya ingin menerima informasi penawaran dari HONDA mendatang."
                     ></v-checkbox>
                     <template>
+                    <!-- Production -->
                     <vue-recaptcha 
                         class="d-flex justify-center"
                         v-model="form.captcha"
@@ -461,6 +462,22 @@
                         >
                             {{ error_captcha }}
                         </v-alert>
+                        <!-- Development -->
+                        <!-- <vue-recaptcha 
+                        class="d-flex justify-center"
+                        v-model="form.captcha"
+                        ref="recaptcha" 
+                        sitekey="6Ler4UshAAAAACAqtzEU_sa0E6Wq9m70xdrMVHYG"
+                        @verify=onVerify />
+                        <v-alert
+                            v-model="captcha_validation"
+                            dense
+                            outlined
+                            type="error"
+                            class="mt-3 mx-12 text-caption"
+                        >
+                            {{ error_captcha }}
+                        </v-alert> -->
                 </template>
                 </v-form>
             </v-card>
@@ -648,16 +665,6 @@
             Close</v-btn>
             </template>
         </v-snackbar>
-
-    <v-overlay
-      :opacity="1"
-      :value="overlay"
-    >
-      <v-progress-circular indeterminate size="64">
-        Loading...
-      </v-progress-circular>
-    </v-overlay>
-
     
   </v-app>
 </template>
@@ -690,7 +697,7 @@ export default {
             ],
             noHPRules: [
                 (v) => !!v || 'Nomor handphone harus diisi',
-                (v) => /^(\+62|62|0)8[1-9][0-9]{6,9}$/.test(v) || "Nomor handphone invalid"
+                (v) => /^(\+62|62|0)8[1-9][0-9]{6,10}$/.test(v) || "Nomor handphone invalid"
             ],
             noPolisiRules: [
                 (v) => !!v || 'Nomor polisi harus diisi',

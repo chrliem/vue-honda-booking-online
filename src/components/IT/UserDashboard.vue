@@ -35,12 +35,21 @@
             <v-toolbar-title>Welcome, <strong>{{getUser()}}</strong>!
              </v-toolbar-title>
              <v-spacer></v-spacer>
-             <v-btn color="error" @click="logout">Logout</v-btn>  
+             <v-btn color="error" @click="logout">Logout</v-btn>
+             <template v-slot:extension>
+                <v-tabs align-with-title v-model="active_tab">
+                <v-tab v-for="tab in tabs"
+                        :key="tab.name"
+                        :to="{name: tab.name}">
+                    {{ tab.text }}
+                </v-tab>
+                </v-tabs>
+            </template> 
         </v-app-bar>
     
 
     <template>
-            <v-card class="mx-6">
+            <v-card class="mx-6 mt-6">
                 <v-toolbar color="secondary" dark>
                     <h3>User Dashboard</h3>
                 </v-toolbar>
@@ -214,6 +223,11 @@
         name:'UserDashboard',
         data(){
             return {
+                activeTab:'',
+                tabs:[
+                    { name: 'UserDashboard', text:'User'},
+                    { name: 'WhatsappDashboard', text:'Whatsapp'}
+                ],
                 addUserDialog: false,
                 editPasswordDialog: false,
                 dialogConfirm: false,
@@ -407,3 +421,10 @@
         }
     }
 </script>
+
+<style scoped>
+a {
+  color:black;
+  text-decoration: none;
+}
+</style>
