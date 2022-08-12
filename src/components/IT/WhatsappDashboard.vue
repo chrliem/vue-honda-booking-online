@@ -88,7 +88,7 @@
                     </v-toolbar>
                     <v-card-title>
                     <v-text-field
-                        v-model="search"
+                        v-model="search1"
                         append-icon="mdi-magnify"
                         label="Search"
                         single-line
@@ -100,7 +100,7 @@
                     <v-data-table
                         :headers="headers1"
                         :items="templates"
-                        :search="search"
+                        :search="search1"
                         light>
                         <template v-slot:[`item.actions`]="{ item }">
                             <v-chip><v-icon color="primary" @click="editHandler1(item)">mdi-pencil</v-icon></v-chip>
@@ -350,8 +350,10 @@
             return {
                 activeTab:'',
                 tabs:[
-                    { name: 'UserDashboard', text:'User'},
-                    { name: 'WhatsappDashboard', text:'Whatsapp'}
+                    { name: 'UserDashboard', text:'User', align:'center'},
+                    { name: 'WhatsappDashboard', text:'Whatsapp', align:'center'},
+                    { name: 'DealerDashboard', text:'Dealer', align:'center'},
+                    { name: 'KendaraanDashboard', text:'Kendaraan', align:'center'}
                 ],
                 addInstanceDialog: false,
                 addTemplateDialog: false,
@@ -366,6 +368,7 @@
                 instances: [],
                 templates: [],
                 search: null,
+                search1: null,
                 color: '',
                 response_message:'',
                 error_message: '',
@@ -384,19 +387,19 @@
                     (v) => !!v || 'Field harus diisi',
                 ],
                 headers: [
-                    {text: 'Dealer', value:"nama_dealer"},
-                    {text: "Instances ID", value: "instance_id"},
-                    {text: "Token", value: "token"},
-                    {text: "Actions", value:'actions'}
+                    {text: 'Dealer', value:"nama_dealer", align:'center'},
+                    {text: "Instances ID", value: "instance_id", align:'center'},
+                    {text: "Token", value: "token", align:'center'},
+                    {text: "Actions", value:'actions', align:'center'}
                 ],
 
                 headers1: [
-                    {text: 'Dealer', value:'nama_dealer'},
-                    {text: 'Instance ID', value:'instance_id'},
-                    {text: 'Token', value:'token'},
-                    {text: 'Namespace', value:'namespace'},
-                    {text: 'Nama Template', value:'template_name'},
-                    {text: "Actions", value:'actions'}
+                    {text: 'Dealer', value:'nama_dealer', align:'center'},
+                    {text: 'Instance ID', value:'instance_id', align:'center'},
+                    {text: 'Token', value:'token', align:'center'},
+                    {text: 'Namespace', value:'namespace', align:'center'},
+                    {text: 'Nama Template', value:'template_name', align:'center'},
+                    {text: "Actions", value:'actions', align:'center'}
                 ]
             }
         },

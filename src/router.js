@@ -47,6 +47,18 @@ const router = new VueRouter({
             name:"WhatsappDashboard",
             meta: {title:'Whatsapp Dashboard'},
             component: importComponent('IT/WhatsappDashboard'),
+        },    
+        {
+            path:"/it/dealer-dashboard",
+            name:"DealerDashboard",
+            meta: {title:'Dealer Dashboard'},
+            component: importComponent('IT/DealerDashboard'),
+        },    
+        {
+            path:"/it/kendaraan-dashboard",
+            name:"KendaraanDashboard",
+            meta: {title:'Kendaraan Dashboard'},
+            component: importComponent('IT/KendaraanDashboard'),
         },              
     ]
 });

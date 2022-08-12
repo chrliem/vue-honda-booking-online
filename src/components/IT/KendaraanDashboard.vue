@@ -46,12 +46,11 @@
                 </v-tabs>
             </template> 
         </v-app-bar>
-    
 
-    <template>
+        <template>
             <v-card class="mx-6 mt-6">
                 <v-toolbar color="secondary" dark>
-                    <h3>User Dashboard</h3>
+                    <h3>Kendaraan Dashboard</h3>
                 </v-toolbar>
                 <v-card-title>
                 <v-text-field
@@ -62,58 +61,33 @@
                     hide-details
                 ></v-text-field>
                 <v-spacer></v-spacer>
-                <v-btn color="primary" dark @click="addUserDialog=true"> Tambah User</v-btn>
+                <v-btn color="primary" dark @click="addKendaraanDialog=true">Tambah Kendaraan</v-btn>
                 </v-card-title>
                 <v-data-table
                     :headers="headers"
-                    :items="users"
+                    :items="kendaraans"
                     :search="search"
                     light>
                     <template v-slot:[`item.actions`]="{ item }">
                         <v-chip><v-icon color="primary" @click="editHandler(item)">mdi-pencil</v-icon></v-chip>
-                        <v-chip><v-icon color="red" @click="deleteHandler(item.id)">mdi-delete</v-icon></v-chip>            
+                        <v-chip><v-icon color="red" @click="deleteHandler(item.id_kendaraan)">mdi-delete</v-icon></v-chip>            
                 </template>
                 </v-data-table>
             </v-card>
     </template>
-
-    <template>
+<template>
             <v-dialog
-                v-model="addUserDialog"
+                v-model="addKendaraanDialog"
                 max-width="600"
-                content-class="edit-status-dialog"
+                content-class="add-kendaraan-dialog"
             >
             <v-card>
             <v-toolbar
               color="secondary"
               dark
-            ><h2>Tambah User</h2></v-toolbar>
+            ><h2>Tambah Kendaraan</h2></v-toolbar>
                     <v-form v-model="valid" ref="form" class="mx-5 my-5">
-                        <v-text-field :rules="namaRules" v-model="form.nama" label="Nama" hint="John Doe" prepend-inner-icon="mdi-account" outlined required></v-text-field>
-                        <v-text-field :rules="emailRules" v-model="form.email" label="Email" hint="username@email.com" prepend-inner-icon="mdi-account" outlined required></v-text-field>
-                        <v-text-field 
-                        :append-icon="show3 ? 'mdi-eye' : 'mdi-eye-off'" :type="show3 ? 'text' : 'password'" @click:append="show3 = !show3"
-                        :rules="passwordRules" v-model="form.password" label="Password" prepend-inner-icon="mdi-lock" outlined required></v-text-field>
-                        <v-autocomplete
-                            :rules="roleRules"
-                            v-model="form.id_role"
-                            prepend-inner-icon="mdi-account-cog"
-                            label="Role"
-                            outlined
-                            :items="role"
-                            item-text="role"
-                            item-value="id"
-                        ></v-autocomplete>
-                        <v-autocomplete
-                            v-show="form.id_role===2"
-                            v-model="form.id_dealer"
-                            prepend-inner-icon="mdi-map-marker"
-                            label="Dealer"
-                            outlined
-                            :items="dealer"
-                            item-text="nama_dealer"
-                            item-value="id_dealer"
-                        ></v-autocomplete>
+                        <v-text-field :rules="fieldRules" v-model="form.model_kendaraan" label="Model Kendaraan" prepend-inner-icon="mdi-car" outlined required></v-text-field>
                     </v-form>
             <v-card-actions class="justify-end">
               <v-btn
@@ -128,20 +102,17 @@
 
     <template>
             <v-dialog
-                v-model="editPasswordDialog"
+                v-model="editKendaraanDialog"
                 max-width="600"
-                content-class="edit-status-dialog"
+                content-class="edit-kendaraan-dialog"
             >
             <v-card>
             <v-toolbar
               color="secondary"
               dark
-            ><h2>Edit Password</h2></v-toolbar>
+            ><h2>Edit Kendaraan</h2></v-toolbar>
                     <v-form v-model="valid" ref="form1" class="mx-5 my-5">
-                        <v-text-field 
-                            :append-icon="show3 ? 'mdi-eye' : 'mdi-eye-off'" :type="show3 ? 'text' : 'password'" @click:append="show3 = !show3"
-                            :rules="passwordRules" v-model="form.password" label="Password" prepend-inner-icon="mdi-lock" outlined required>
-                        </v-text-field>
+                        <v-text-field :rules="fieldRules" v-model="form.model_kendaraan" label="Model Kendaraan" prepend-inner-icon="mdi-car" outlined required></v-text-field>
                     </v-form>
             <v-card-actions class="justify-end">
               <v-btn
@@ -160,7 +131,7 @@
         <v-card-title>
           <span class="headline">Warning!</span>
         </v-card-title>
-        <v-card-text>Apakah Anda yakin ingin menghapus user ini?</v-card-text>
+        <v-card-text>Apakah Anda yakin ingin menghapus kendaraan ini?</v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="blue darken-1" text @click="close2">Batal</v-btn>
@@ -220,7 +191,7 @@
 /* eslint-disable */
 
     export default {
-        name:'UserDashboard',
+        name:'KendaraanDashboard',
         data(){
             return {
                 activeTab:'',
@@ -230,49 +201,30 @@
                     { name: 'DealerDashboard', text:'Dealer', align:'center'},
                     { name: 'KendaraanDashboard', text:'Kendaraan', align:'center'}
                 ],
-                addUserDialog: false,
-                editPasswordDialog: false,
+                addKendaraanDialog: false,
+                editKendaraanDialog: false,
                 dialogConfirm: false,
                 snackbar: false,
                 snackbar1: false,
                 valid:'',
                 editId: '',
-                users: [],
+                kendaraans: [],
                 search: null,
                 color: '',
+                icon_message:'',
+                title_message:'',
                 response_message:'',
                 error_message: '',
                 show3:'',
-                dealer: [],
-                role: [{id:1, role:'IT'},{id:2, role:'CCO'}],
-                userData: new FormData,
+                newData: new FormData,
                 form:{
-                    nama:'',
-                    email:'',
-                    id_dealer:'',
-                    password: '',
-                    id_role:''
+                    model_kendaraan:'',
                 },
-                namaRules: [
-                    (v) => !!v || 'Nama harus diisi',
-                ],
-                emailRules: [
-                    (v) => !!v || 'Email harus diisi',
-                ],
-                passwordRules: [
-                    (v) => !!v || 'Password harus diisi'
-                ],
-                dealerRules: [
-                    (v) => !!v || 'Dealer harus diisi'
-                ],
-                roleRules: [
-                    (v) => !!v || 'Role harus diisi'
+                fieldRules: [
+                    (v) => !!v || 'Field harus diisi',
                 ],
                 headers: [
-                    {text: "Nama", value:"nama", align:'center'},
-                    {text: "Alamat Email", value: "email", align:'center'},
-                    {text: "Dealer", value: "nama_dealer", align:'center'},
-                    {text: 'Role', value: 'role', align:'center'},
+                    {text: "Model Kendaraan", value:"model_kendaraan", align:'center'},
                     {text: "Actions", value:'actions', align:'center'}
                 ],
             }
@@ -280,21 +232,17 @@
         methods:{
             validate(){
                 if(this.$refs.form.validate()){
-                    this.saveUser()
+                    this.saveData()
                  }   
             },
             validate2(){
                 if(this.$refs.form1.validate()){
-                    this.savePassword()
+                    this.updateData()
                 }
             },
-            saveUser(){
-                this.userData.append('nama', this.form.nama)
-                this.userData.append('email', this.form.email)
-                this.userData.append('password', this.form.password)
-                this.userData.append('id_dealer', this.form.id_dealer)
-                this.userData.append('id_role', this.form.id_role)
-                this.$http.post(this.$api+'/register', this.userData, {
+            saveData(){
+                this.newData.append('model_kendaraan', this.form.model_kendaraan)
+                this.$http.post(this.$api+'/kendaraan', this.newData, {
                      headers:{
                         'Authorization':'Bearer '+localStorage.getItem('token')
                     }
@@ -314,11 +262,11 @@
                     this.title_message = 'Error'
                 })
             },
-            savePassword(){
-                this.userData.append('password', this.form.password)
+            updateData(){
+                this.newData.append('model_kendaraan', this.form.model_kendaraan)
 
-                var url = this.$api+'/user-password/'+this.editId
-                this.$http.post(url, this.userData, {
+                var url = this.$api+'/kendaraan/'+this.editId
+                this.$http.post(url, this.newData, {
                         headers: {
                             'Authorization':'Bearer '+localStorage.getItem('token')
                         }
@@ -339,7 +287,7 @@
                     })
             },
             deleteData(){
-                var url = this.$api+'/user/'+this.deleteId
+                var url = this.$api+'/kendaraan/'+this.deleteId
                 this.$http.delete(url,{
                     headers: {
                         'Authorization':'Bearer ' + localStorage.getItem('token'),
@@ -362,27 +310,17 @@
                 });
             },
             readData(){
-            var url = this.$api+'/user'
+            var url = this.$api+'/kendaraan'
                 this.$http.get(url,{
                     headers:{
                         'Authorization':'Bearer '+localStorage.getItem('token')
                     }
                 }).then(response=>{
-                    this.users = response.data.data
+                    this.kendaraans = response.data.data
                 })
             },
             getUser(){
                 return localStorage.getItem('nama')
-            },
-            getDataDealer(){
-            var url = this.$api+'/dealer'
-                this.$http.get(url,{
-                    headers:{
-                        'Authorization':'Bearer '+localStorage.getItem('token')
-                    }
-                }).then(response=>{
-                    this.dealer = response.data.data
-                })
             },
             logout(){
                 localStorage.removeItem('nama')
@@ -391,19 +329,20 @@
                 this.$router.push({name:'ITLogin'})
             },
             editHandler(item){
-                this.editId = item.id
-                this.editPasswordDialog = true;
+                this.editId = item.id_kendaraan
+                this.form.model_kendaraan = item.model_kendaraan
+                this.editKendaraanDialog = true;
             },
             deleteHandler(id){
                 this.deleteId = id
                 this.dialogConfirm = true
             },
             close(){
-                this.addUserDialog = false
+                this.addKendaraanDialog = false
                 this.$refs.form.reset()
             },
             close1(){
-                this.editPasswordDialog = false
+                this.editKendaraanDialog = false
                 this.$refs.form1.reset()
 
             },
@@ -413,7 +352,6 @@
         },
         mounted(){
             this.readData();
-            this.getDataDealer();
         },
         created(){
             this.interval = setInterval(this.readData, 5000)
