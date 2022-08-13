@@ -211,22 +211,33 @@
                         <v-date-picker
                             class="hidden-lg-and-up"
                             v-model="form.tgl_service"
+                            :min="bookingRule()"
                             no-title
-                            :min="new Date((new Date()).valueOf() + 1000*3600*24).toISOString().slice(0,10)"
+                            :allowed-dates="allowedDates"                            
                             locale="id"
                         ></v-date-picker>
                     </v-menu>
                     <v-autocomplete
-                            prepend-inner-icon="mdi-clock-time-eight"
-                            class="hidden-lg-and-up"
-                            v-model="form.jam_service"
-                            :rules="jamServiceRules"
-                            label="Jam Service"
-                            :items="jam_service"
-                            item-text="name"
-                            item-value="name"
-                            outlined
+                        v-show="form.tgl_service===''"
+                        disabled
+                        prepend-inner-icon="mdi-clock-time-eight"
+                        class="hidden-lg-and-up"
+                        label="Jam Service"
+                        outlined
                         ></v-autocomplete>
+                        <span v-if="form.tgl_service!==''">
+                            <v-autocomplete
+                                prepend-inner-icon="mdi-clock-time-eight"
+                                class="hidden-lg-and-up"
+                                v-model="form.jam_service"
+                                label="Jam Service"
+                                :rules="jamServiceRules"
+                                :items="jam_service"
+                                item-text="name"
+                                item-value="name"
+                                outlined
+                        ></v-autocomplete>
+                        </span>
                 <!-- Desktop version -->
                 <v-row class="hidden-md-and-down">
                     <v-col cols="12" md="4">
@@ -307,25 +318,35 @@
                             ></v-text-field>
                         </template>
                         <v-date-picker
+                            :allowed-dates="allowedDates"
                             class="hidden-md-and-down"
                             v-model="form.tgl_service"
                             no-title
-                            :min="new Date((new Date()).valueOf() + 1000*3600*24).toISOString().slice(0,10)"
+                            :min="bookingRule()"
                             locale="id"
                         ></v-date-picker>
                     </v-menu>   
                     </v-col>
                     <v-col cols="12" md="6">
-                        <v-autocomplete
-                            prepend-inner-icon="mdi-clock-time-eight"
-                            v-model="form.jam_service"
-                            :rules="jamServiceRules"
-                            label="Jam Service"
-                            :items="jam_service"
-                            item-text="name"
-                            item-value="name"
-                            outlined
+                         <v-autocomplete
+                        v-show="form.tgl_service===''"
+                        disabled
+                        prepend-inner-icon="mdi-clock-time-eight"
+                        label="Jam Service"
+                        outlined
                         ></v-autocomplete>
+                        <span v-if="form.tgl_service!==''">
+                            <v-autocomplete
+                                prepend-inner-icon="mdi-clock-time-eight"
+                                v-model="form.jam_service"
+                                label="Jam Service"
+                                :rules="jamServiceRules"
+                                :items="jam_service"
+                                item-text="name"
+                                item-value="name"
+                                outlined
+                        ></v-autocomplete>
+                        </span>
                     </v-col>
                 </v-row>
                     
@@ -653,6 +674,7 @@
 </template>
 
 <script>
+/* eslint-disable */
 import moment from 'moment';
 
 export default { 
@@ -675,6 +697,7 @@ export default {
             menu1: false,
             valid: false,
             valid1: false,
+            availableDates:[],
             namaRules: [
                 (v) => !!v || 'Nama lengkap harus diisi',
             ],
@@ -837,7 +860,20 @@ export default {
         reload(){
             this.successful_dialog.false
             window.location.reload()
+        },
+        bookingRule(){
+            console.log(moment(moment(),'HH:mm').isBefore(moment('16:00','HH:mm')))
+
+            if(moment(moment(),'HH:mm').isBefore(moment('15:00','HH:mm'))){
+                return new Date((new Date()).valueOf() + 1000*3600*24).toISOString().slice(0,10)
+            }else{
+                return new Date((new Date()).valueOf() + 1000*3600*48).toISOString().slice(0,10)
+            }
+        },
+        allowedDates(val){
+           return moment(val).day() !== 0
         }
+        
     },
     mounted(){
         this.getDataKendaraan();
@@ -852,4 +888,4 @@ export default {
     background: url( 'https://www.hondasolobaru.co.id/wp-content/uploads/2022/08/download-2.png') no-repeat center center;
     background-size: cover;
   }
-</style>
+</style>    
