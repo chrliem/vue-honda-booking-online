@@ -162,12 +162,10 @@ export default {
                 localStorage.setItem('dealer', this.form.id_dealer)
                 localStorage.setItem('role',2)
                 for(let i=0; i<this.dealer.length; i++){
-                    console.log(this.dealer.length)
                     if(this.dealer[i].id_dealer===this.form.id_dealer)
                     localStorage.setItem('nama_dealer', this.dealer[i].nama_dealer)
 
                 }
-                console.log(localStorage.getItem('nama_dealer'))
                 this.color = 'blue-grey darken-1'
                 this.snackbar1 = true
                 this.icon_message = 'mdi-check-decagram'

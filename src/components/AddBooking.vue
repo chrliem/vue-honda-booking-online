@@ -803,9 +803,7 @@ export default {
         },
         validate2(){
             if(this.$refs.form1.validate()){
-                console.log("test")
                 this.stepper=4;
-                console.log(this.stepper)
             }
         },
         validate3(){
@@ -862,8 +860,6 @@ export default {
             window.location.reload()
         },
         bookingRule(){
-            console.log(moment(moment(),'HH:mm').isBefore(moment('16:00','HH:mm')))
-
             if(moment(moment(),'HH:mm').isBefore(moment('15:00','HH:mm'))){
                 return new Date((new Date()).valueOf() + 1000*3600*24).toISOString().slice(0,10)
             }else{

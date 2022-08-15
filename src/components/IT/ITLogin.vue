@@ -176,7 +176,6 @@ export default {
                         name: 'UserDashboard'
                     })
                 }else if(localStorage.getItem('role')!=1){
-                    console.log(localStorage.getItem('role'))
                     localStorage.removeItem('nama')
                     localStorage.removeItem('token')
                     localStorage.removeItem('role')

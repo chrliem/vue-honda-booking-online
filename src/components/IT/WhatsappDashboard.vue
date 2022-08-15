@@ -452,7 +452,6 @@
                 this.newData.append('instance_id', this.form.instance_id)
                 this.newData.append('token', this.form.token)
                 this.newData.append('id_dealer', this.form.id_dealer)
-                console.log(this.form.id_dealer)
                 this.$http.post(this.$api+'/wa-instance/'+this.editId, this.newData, {
                      headers:{
                         'Authorization':'Bearer '+localStorage.getItem('token')
@@ -501,7 +500,6 @@
                 this.newData.append('namespace', this.form.namespace)
                 this.newData.append('template_name', this.form.template_name)
                 this.newData.append('instance_id', this.form.instance_id_template)
-                console.log(this.editId)
                 this.$http.post(this.$api+'/wa-template/'+this.editId, this.newData, {
                      headers:{
                         'Authorization':'Bearer '+localStorage.getItem('token')
@@ -524,7 +522,6 @@
             },
             deleteData(){
                 var url = this.$api+'/wa-instance/'+this.deleteId
-                console.log(url)
                 this.$http.delete(url,{
                     headers: {
                         'Authorization':'Bearer ' + localStorage.getItem('token'),
@@ -548,7 +545,6 @@
             },
             deleteData1(){
                 var url = this.$api+'/wa-template/'+this.deleteId
-                console.log(url)
                 this.$http.delete(url,{
                     headers: {
                         'Authorization':'Bearer ' + localStorage.getItem('token'),
