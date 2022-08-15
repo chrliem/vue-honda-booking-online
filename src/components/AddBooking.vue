@@ -784,6 +784,9 @@ export default {
                     }
                 }).then(response=>{
                     this.kendaraan = response.data.data
+                    console.log(this.kendaraan)
+                }).catch(error=>{
+                    console.log(error.response.data.message)
                 })
         },
         getDataDealer(){
@@ -794,6 +797,9 @@ export default {
                     }
                 }).then(response=>{
                     this.dealer = response.data.data
+                    console.log(this.dealer)
+                }).catch(error=>{
+                    console.log(error.response.data.message)
                 })
         },
         validate1(){
