@@ -85,7 +85,6 @@
                         <v-text-field placeholder="081234567890" :rules="noHPRules" v-model="form.no_handphone" label="Nomor Handphone" hint="Contoh: 081234567890" prepend-inner-icon="mdi-cellphone" outlined></v-text-field>
                         <v-text-field placeholder="AD 1234 HO" :rules="noPolisiRules" v-model="form.no_polisi" label="Nomor Polisi" prepend-inner-icon="mdi-car-search" hint="Contoh: AD 1234 HO atau ad 1234 ho" outlined></v-text-field>
                         <v-autocomplete
-                                class="hidden-lg-and-up"
                                 prepend-inner-icon="mdi-car"
                                 :rules="kendaraanRules"
                                 v-model="form.id_kendaraan"
@@ -95,8 +94,44 @@
                                 item-value="id_kendaraan"
                                 outlined
                             ></v-autocomplete>
-                        <v-text-field class="hidden-lg-and-up" :rules="noRangkaRules" v-model="form.no_rangka" label="Nomor Rangka/VIN" prepend-inner-icon="mdi-car-search" hint="Nomor rangka dapat ditemukan di STNK" outlined></v-text-field>
-                        <v-row class="hidden-md-and-down">
+                            <v-radio-group
+                                class="mt-n3"
+                                v-model="form.no_rangka_method"
+                                row
+                                label="Pilih Metode Input Nomor Rangka/VIN"
+                                :rules="noRangkaRules"
+                            >
+                                <v-radio value=1>
+                                    <template v-slot:label>
+                                        <v-icon>mdi-keyboard</v-icon><div>&nbsp;Input manual</div>
+                                    </template>
+                                </v-radio>
+                                <v-radio value=2>
+                                    <template v-slot:label>
+                                        <v-icon>mdi-camera</v-icon><div>&nbsp;Foto STNK/Nomor Rangka</div>
+                                    </template>
+                                </v-radio>
+                            </v-radio-group>
+                            <span v-if="form.no_rangka_method==1">
+                                <v-text-field :rules="noRangkaRules" v-model="form.no_rangka" label="Nomor Rangka/VIN" prepend-inner-icon="mdi-car-search" hint="Nomor rangka dapat ditemukan di STNK" outlined></v-text-field>
+                            </span>
+                            <span v-else-if="form.no_rangka_method==2">
+                                <v-file-input
+                                    v-model="no_rangka_image"
+                                    @change="previewImage"
+                                    :rules="noRangkaRules"
+                                    id="no_rangka_image"
+                                    enctype="multipart/form-data"
+                                    accept="image/png, image/jpeg, image/bmp"
+                                    placeholder="Foto Nomor Rangka"
+                                    prepend-icon="mdi-camera"
+                                    label="Foto Nomor Rangka"
+                                    outlined
+                            ></v-file-input>
+                            <v-img height="100px" width="200px" :src="url"></v-img>
+                            </span>
+                            
+                        <!-- <v-row class="hidden-md-and-down">
                             <v-col cols="12" md="6">
                             <v-autocomplete
                                 prepend-inner-icon="mdi-car"
@@ -112,7 +147,7 @@
                         <v-col cols="12" md="6">
                             <v-text-field :rules="noRangkaRules" v-model="form.no_rangka" label="Nomor Rangka/VIN" prepend-inner-icon="mdi-car-search" hint="Nomor rangka dapat ditemukan di STNK" outlined></v-text-field>
                         </v-col>
-                        </v-row>        
+                        </v-row>         -->
                     </v-form>
                     </v-container>
                 </v-card>
@@ -403,9 +438,14 @@
                                     </span>
                                     </td>
                                 </tr>
-                                <tr>
-                                    <td class="text-left"><strong>Nomor Rangka</strong></td>
-                                    <td class="text-left">{{ form.no_rangka }}</td>
+                                <tr v-if="form.no_rangka===''">
+                                         <td class="text-left"><strong>Nomor Rangka</strong></td>
+                                        <td>
+                                            <v-img height="100px" width="200px" :src="url"></v-img>
+                                        </td>
+                                </tr><tr v-else-if="form.no_rangka!==''">
+                                        <td class="text-left"><strong>Nomor Rangka</strong></td>
+                                        <td class="text-left">{{ form.no_rangka }}</td>
                                 </tr>
                                 <tr>
                                     <td class="text-left"><strong>Dealer</strong></td>
@@ -449,7 +489,7 @@
                     ></v-checkbox>
                     <template>
                     <!-- Production -->
-                    <vue-recaptcha 
+                    <!-- <vue-recaptcha 
                         class="d-flex justify-center"
                         v-model="form.captcha"
                         ref="recaptcha" 
@@ -463,9 +503,9 @@
                             class="mt-3 mx-12 text-caption"
                         >
                             {{ error_captcha }}
-                        </v-alert>
+                        </v-alert> -->
                         <!-- Development -->
-                        <!-- <vue-recaptcha 
+                        <vue-recaptcha 
                         class="d-flex justify-center"
                         v-model="form.captcha"
                         ref="recaptcha" 
@@ -479,7 +519,7 @@
                             class="mt-3 mx-12 text-caption"
                         >
                             {{ error_captcha }}
-                        </v-alert> -->
+                        </v-alert>
                 </template>
                 </v-form>
             </v-card>
@@ -655,8 +695,6 @@
             </v-layout>
         </div>
         </template>
-
-
         <v-snackbar v-model="snackbar2" :color="color" timeout="2000" bottom>
             {{error_message}}
             <template v-slot:action="{ attrs }">
@@ -669,7 +707,6 @@
             Close</v-btn>
             </template>
         </v-snackbar>
-    
   </v-app>
 </template>
 
@@ -697,6 +734,13 @@ export default {
             menu1: false,
             valid: false,
             valid1: false,
+            noRangkaMethod: null, /* 1 = Input manual, 2 = Ambil gambar, 3 =  Gallery    */
+            isCameraOpen: false,
+            isPhotoTaken: false,
+            isShotPhoto: false,
+            isLoading: false,
+            url: null,
+            no_rangka_image_model: null,
             availableDates:[],
             namaRules: [
                 (v) => !!v || 'Nama lengkap harus diisi',
@@ -747,7 +791,9 @@ export default {
                 jenis_pekerjaan: '',
                 jenis_layanan: '',
                 keterangan_customer: '',
-                captcha: false
+                captcha: false,
+                no_rangka_method: '',
+                no_rangka_image:''
             },
            kendaraan: [{
                 id_kendaraan: '',
@@ -776,6 +822,9 @@ export default {
         };
     },
     methods:{
+        previewImage(){
+            this.url = URL.createObjectURL(this.no_rangka_image)
+        },
         getDataKendaraan(){
             var url = this.$api+'/kendaraan'
                 this.$http.get(url,{
@@ -830,19 +879,25 @@ export default {
             return moment(String(this.form.tgl_service)).locale('id').format('dddd, DD MMMM YYYY')
         },
         submit(){
-            var formatted_tgl_service = this.form.tgl_service+' '+this.form.jam_service
-            this.booking.append('nama_customer', this.form.nama_customer)
-            this.booking.append('email_customer', this.form.email_customer)
-            this.booking.append('no_handphone', this.form.no_handphone)
-            this.booking.append('no_polisi', this.form.no_polisi)
-            this.booking.append('id_dealer', this.form.id_dealer)
-            this.booking.append('id_kendaraan', this.form.id_kendaraan)
-            this.booking.append('no_rangka', this.form.no_rangka)
-            this.booking.append('tgl_service',formatted_tgl_service)
-            this.booking.append('jenis_pekerjaan', this.form.jenis_pekerjaan)
-            this.booking.append('jenis_layanan', this.form.jenis_layanan)
-            this.booking.append('keterangan_customer', this.form.keterangan_customer)
+            // var no_rangka_image = document.getElementById('no_rangka_image')
 
+            if(this.no_rangka_image){
+                this.booking.append('no_rangka_image',this.no_rangka_image)
+            }
+                var formatted_tgl_service = this.form.tgl_service+' '+this.form.jam_service
+                this.booking.append('nama_customer', this.form.nama_customer)
+                this.booking.append('email_customer', this.form.email_customer)
+                this.booking.append('no_handphone', this.form.no_handphone)
+                this.booking.append('no_polisi', this.form.no_polisi)
+                this.booking.append('id_dealer', this.form.id_dealer)
+                this.booking.append('id_kendaraan', this.form.id_kendaraan)
+                this.booking.append('no_rangka', this.form.no_rangka)
+                this.booking.append('tgl_service',formatted_tgl_service)
+                this.booking.append('jenis_pekerjaan', this.form.jenis_pekerjaan)
+                this.booking.append('jenis_layanan', this.form.jenis_layanan)
+                this.booking.append('keterangan_customer', this.form.keterangan_customer)
+
+            
             var url = this.$api+'/booking'
             this.$http.post(url, this.booking, {
                 headers:{

@@ -236,7 +236,7 @@
                                 </tr>
                                 <tr>
                                     <td><strong>No Polisi</strong></td>
-                                    <td>{{ item.no_polisi }}</td>
+                                    <td> <v-chip small label color="black" text-color="white"><strong>{{item.no_polisi}}</strong></v-chip></td>
                                 </tr>
                                 <tr>
                                     <td><strong>Model Kendaraan</strong></td>
@@ -249,7 +249,11 @@
                                 </tr>
                                 <tr>
                                     <td><strong>Nomor Rangka</strong></td>
-                                    <td>{{ item.no_rangka }}</td>
+                                    <td v-if="item.no_rangka===null">
+                                        <v-btn x-small @click="openImageDialog(item.no_rangka_image)">Lihat Gambar</v-btn>
+                                    </td><td v-else>
+                                        {{ item.no_rangka }}
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td><strong>Dealer</strong></td>
@@ -384,7 +388,8 @@
                
             </v-data-iterator>
             
-        <template>
+
+        <!-- <template>
             <v-dialog
                 v-model="editDataDialog"
                 max-width="800"
@@ -417,6 +422,202 @@
                             <v-text-field :rules="noRangkaRules" v-model="form.no_rangka" label="Nomor Rangka/VIN" prepend-inner-icon="mdi-car-search" hint="Nomor rangka dapat ditemukan di STNK" outlined></v-text-field>
                         </v-col>
                     </v-row>        
+                    <v-row class="mt-n7">
+                    <v-col cols="12" md="4">
+                        <v-autocomplete
+                            prepend-inner-icon="mdi-map-marker"
+                            :rules="dealerRules"
+                            v-model="form.nama_dealer"
+                            label="Dealer"
+                            outlined
+                            :items="dealer"
+                            item-text="nama_dealer"
+                            item-value="id_dealer"
+                        ></v-autocomplete>
+                    </v-col>
+                    <v-col cols="12" md="4">
+                        <v-autocomplete
+                            prepend-inner-icon="mdi-tools"
+                            v-model="form.jenis_pekerjaan"
+                            :rules="jenisPekerjaanRules"
+                            label="Jenis Pekerjaan"
+                            :items="jenis_pekerjaan"
+                            item-text="jenis_pekerjaan"
+                            item-value="jenis_pekerjaan"
+                            outlined
+                        ></v-autocomplete>
+                    </v-col>
+                    <v-col cols="12" md="4">
+                        <v-autocomplete
+                            v-show="form.jenis_pekerjaan===''"
+                            label="Jenis Layanan"
+                            disabled
+                            outlined
+                        ></v-autocomplete>
+                        <span v-if="form.jenis_pekerjaan==='Authorized Workshop'">
+                            <v-autocomplete
+                            :rules="jenisLayananRules"
+                            v-model="form.jenis_layanan"
+                            label="Jenis Layanan"
+                            :items="layanan_authorized_workshop"
+                            item-text="jenis_layanan"
+                            item-value="jenis_layanan"
+                            outlined
+                        ></v-autocomplete>
+                        </span><span v-else-if="form.jenis_pekerjaan==='Home Service'">
+                            <v-autocomplete
+                                :rules="jenisLayananRules"
+                                label="Jenis Layanan"
+                                v-model="form.jenis_layanan"
+                                :items="layanan_home_service"
+                                item-text="jenis_layanan"
+                                item-value="jenis_layanan"
+                                outlined
+                            ></v-autocomplete>
+                        </span>
+                    </v-col>
+                </v-row>    
+                <v-row class="mt-n7">
+                    <v-col cols="12" md="6">
+                    <v-menu
+                        ref="menu1"
+                        v-model="menu1"
+                        :close-on-content-click="false"
+                        transition="scale-transition"
+                        offset-y
+                        max-width="100%"
+                        min-width="auto">
+                        <template v-slot:activator="{ on, attrs }">
+                            <v-text-field 
+                                prepend-inner-icon="mdi-calendar-range"
+                                v-model="form.tgl_service"
+                                :rules="tglServiceRules"
+                                label="Tanggal Service"
+                                persistent-hint
+                                v-bind="attrs"
+                                v-on="on"
+                                outlined
+                            ></v-text-field>
+                        </template>
+                        <v-date-picker
+                            v-model="form.tgl_service"
+                            no-title
+                            :min="new Date((new Date()).valueOf() + 1000*3600*24).toISOString().slice(0,10)"
+                            locale="id"
+                        ></v-date-picker>
+                    </v-menu>   
+                    </v-col>
+                    <v-col cols="12" md="6">
+                        <v-autocomplete
+                            prepend-inner-icon="mdi-clock-time-eight"
+                            v-model="form.jam_service"
+                            :rules="jamServiceRules"
+                            label="Jam Service"
+                            :items="jam_service"
+                            item-text="name"
+                            item-value="name"
+                            outlined
+                        ></v-autocomplete>
+                    </v-col>
+                </v-row>
+                    
+                <v-textarea
+                    prepend-inner-icon="mdi-pencil-box-multiple"
+                    v-model="form.keterangan_customer"
+                    outlined
+                    label="Pesan/Keluhan"
+                    hint="Sampaikan pesan atau keluhan yang ingin Anda sampaikan"
+                ></v-textarea>
+                    </v-form>
+            <v-card-actions class="justify-end">
+                
+              <v-btn
+                text
+                color="error"
+                @click="close"
+              >Tutup</v-btn>
+              <v-btn text color="primary" @click="save">Simpan</v-btn>
+            </v-card-actions>
+          </v-card>
+            </v-dialog>
+        </template> -->
+
+        <template>
+            <v-dialog
+                v-model="imageDialog"
+                max-width="auto"
+                content-class="open-image-dialog"
+            >
+            <v-card>
+            <v-toolbar
+              color="secondary"
+              dark
+            ><h2>Lihat Gambar</h2>
+            <v-spacer></v-spacer>
+            <v-btn
+                text
+                @click="close2"
+              >Close</v-btn>
+            </v-toolbar>
+                <v-img class="mx-auto" :src="url"></v-img>
+          </v-card>
+            </v-dialog>
+        </template>
+        <template>
+            <v-dialog
+                v-model="editDataDialog"
+                max-width="800"
+                content-class="edit-data-dialog"
+            >
+            <v-card>
+            <v-toolbar
+              color="secondary"
+              dark
+            ><h2>Edit Data Booking</h2></v-toolbar>
+                    <v-form v-model="valid" ref="form" class="mx-5 my-5">
+                        <v-text-field :rules="namaRules" v-model="form.nama_customer" label="Nama Lengkap" hint="Contoh: John Doe" prepend-inner-icon="mdi-account" outlined ></v-text-field>
+                        <v-text-field v-model="form.email_customer" label="Alamat Email" hint="Contoh: username@email.com" prepend-inner-icon="mdi-email" outlined></v-text-field>
+                        <v-text-field placeholder="081234567890" :rules="noHPRules" v-model="form.no_handphone" label="Nomor Handphone" hint="Contoh: 081234567890" prepend-inner-icon="mdi-cellphone" outlined></v-text-field>
+                        <v-text-field placeholder="AD 1234 HO" :rules="noPolisiRules" v-model="form.no_polisi" label="Nomor Polisi" prepend-inner-icon="mdi-car-search" hint="Contoh: AD 1234 HO" outlined></v-text-field>
+                        <v-row>
+                            <v-col cols="12" md="4" v-show="form.no_rangka_image!==null">
+                            <v-autocomplete
+                                prepend-inner-icon="mdi-car"
+                                :rules="kendaraanRules"
+                                v-model="form.model_kendaraan"
+                                label="Model Kendaraan"
+                                :items="kendaraan"
+                                item-text="model_kendaraan"
+                                item-value="id_kendaraan"
+                                outlined
+                            ></v-autocomplete>
+                        </v-col>
+                        <v-col cols="12" md="6" v-show="form.no_rangka_image===null">
+                            <v-autocomplete
+                                prepend-inner-icon="mdi-car"
+                                :rules="kendaraanRules"
+                                v-model="form.model_kendaraan"
+                                label="Model Kendaraan"
+                                :items="kendaraan"
+                                item-text="model_kendaraan"
+                                item-value="id_kendaraan"
+                                outlined
+                            ></v-autocomplete>
+                        </v-col>
+                        <v-col cols="12" md="4" v-show="form.no_rangka_image!==null">
+                            <v-text-field :rules="noRangkaRules" v-model="form.no_rangka" label="Nomor Rangka/VIN" prepend-inner-icon="mdi-car-search" outlined></v-text-field>                            
+                        </v-col>
+                        <v-col cols="12" md="6" v-show="form.no_rangka_image===null">
+                            <v-text-field :rules="noRangkaRules" v-model="form.no_rangka" label="Nomor Rangka/VIN" prepend-inner-icon="mdi-car-search" outlined></v-text-field>                            
+                        </v-col>
+                        <v-col cols="12" md="2" v-show="form.no_rangka_image!==null">
+                            <v-btn class="mt-2" @click="openImageDialog(form.no_rangka_image)"> Lihat Nomor Rangka </v-btn>
+                        </v-col>
+                    </v-row>
+                    <!-- <v-row class="mt-n7">
+                        <v-card-text>Gambar Nomor Rangka <br> {{form.no_rangka_image}}</v-card-text>
+                        <v-img @click="openImageDialog(form.no_rangka_image)" class="mx-auto" max-height="100px" max-width="200px" :src="url"></v-img>
+                    </v-row> -->
                     <v-row class="mt-n7">
                     <v-col cols="12" md="4">
                         <v-autocomplete
@@ -680,6 +881,7 @@ import moment from 'moment-timezone';
         editId: '',
         editDataDialog: false,
         editStatusDialog: false,
+        imageDialog: false,
         icon_message:'',
         title_message:'',
         error_message: '',
@@ -698,6 +900,7 @@ import moment from 'moment-timezone';
         interval: null,
         valid: false,
         menu1: false,
+        url:null,
         color: '',
         keys: [
             'Tanggal Service',
@@ -737,6 +940,7 @@ import moment from 'moment-timezone';
                 keterangan_customer: '',
                 keterangan_cco: '',
                 status: '',
+                no_rangka_image:''
         },
         kendaraan: [{
                 id_kendaraan: '',
@@ -827,7 +1031,11 @@ import moment from 'moment-timezone';
       
     },
     methods:{
-        
+        openImageDialog(no_rangka_image){
+            this.imageDialog = true
+            // this.url = 'http://127.0.0.1:8000/storage/no_rangka_image/'+no_rangka_image
+            this.url = 'https://be.bintang-group.co.id/storage/no_rangka_image/'+no_rangka_image
+        },
         logout(){
             localStorage.removeItem('nama')
             localStorage.removeItem('token')
@@ -897,9 +1105,11 @@ import moment from 'moment-timezone';
             this.form.tgl_service = item.tgl_service.substring(0,10)
             this.form.jam_service = item.tgl_service.substring(11,16)
             this.form.jenis_pekerjaan = item.jenis_pekerjaan
+            this.form.no_rangka_image = item.no_rangka_image
             this.form.jenis_layanan = item.jenis_layanan
             this.form.keterangan_customer = item.keterangan_customer
-
+            // this.url = 'http://127.0.0.1:8000/storage/no_rangka_image/'+item.no_rangka_image
+            this.url = 'https://be.bintang-group.co.id/storage/no_rangka_image/'+item.no_rangka_image
             this.editDataDialog = true
         },
         editStatusHandler(item){
@@ -1069,8 +1279,11 @@ import moment from 'moment-timezone';
             this.$refs.form.reset()
         },
         close1(){
-            this.editStatusDialog = false,
+            this.editStatusDialog = false
             this.$refs.form.reset()
+        },
+        close2(){
+            this.imageDialog = false
         }
 
     },
