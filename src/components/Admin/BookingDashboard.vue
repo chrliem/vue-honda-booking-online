@@ -978,7 +978,7 @@ import moment from 'moment-timezone';
         ],
         noPolisiRules: [
             (v) => !!v || 'Nomor polisi harus diisi',
-            (v) => /^[A-Z]{1,2}\s{1}\d{0,4}\s{0,1}[A-Z]{0,3}$/.test(v) || "Nomor polisi tidak sesuai format. Contoh: AD 1234 HO"
+            (v) => /^[A-Za-z]{1,2}\s{1}\d{0,4}\s{0,1}[A-Z]{0,3}$/.test(v) || "Nomor polisi tidak sesuai format. Contoh: AD 1234 HO"
         ],
         kendaraanRules: [
             (v) => !!v || 'Model kendaraan harus diisi',
