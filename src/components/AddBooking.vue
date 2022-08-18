@@ -55,11 +55,13 @@
             <v-stepper-content step="1">
                 <v-card flat color="blue-grey lighten-5" class="mb-12 pa-5" height="auto">
                     <ol>
-                        <li class="text-left">Booking harus di lakukan maksimal H-1 sebelum pukul 15.00 WIB jika service dilakukan pada esok harinya.</li>
-                        <li class="text-left">Setelah melakukan Booking Online, maka staff booking service akan segera menghubungi Anda untuk konfirmasi ulang, apakah jam booking tersedia atau sudah penuh</li>
-                        <li class="text-left">Jika jam booking yang diinginkan sudah penuh, akan di tawarkan opsi untuk jam lain oleh staff booking service</li>
-                        <li class="text-left">Konfirmasi booking kepada customer oleh staff booking dilakukan pada jam kerja Senin-Jumat pkl 08.00-16.00 WIB dan Sabtu pkl 08.00-12.00 WIB</li>
-                        <li class="text-left">Waktu toleransi keterlambatan kedetangan booking service adalah <strong>15 menit</strong></li>
+                        <li class="text-left">Booking harus dilakukan maksimal <strong>H-1 sebelum pukul 15.00 WIB jika service dilakukan pada keesokan harinya.</strong></li>
+                        <li class="text-left">Setelah melakukan Booking Online, maka staff Booking Service akan segera menghubungi Anda untuk konfirmasi ulang, apakah jam booking tersedia atau sudah penuh</li>
+                        <li class="text-left">Jika jam booking yang diinginkan sudah penuh, akan di tawarkan opsi untuk jam lain oleh staff Booking Service</li>
+                        <li class="text-left">Konfirmasi booking kepada customer oleh staff booking dilakukan pada jam kerja Senin-Jumat pukul 08.00-16.00 WIB dan Sabtu pukul 08.00-12.00 WIB</li>
+                        <li class="text-left">Waktu toleransi keterlambatan kedatangan Booking Service adalah <strong>15 menit</strong></li>
+                        <li class="text-left">Khusus hari Minggu tidak melayani booking service</li>
+                        <li class="text-left">Diperlukan Nomor Rangka untuk mengetahui history/free service/PUD mobil tersebut. Nomor rangka dapat ditemukan pada STNK</li>
                     </ol>
                 </v-card>
                 <v-btn color="primary" @click="stepper = 2">
@@ -94,26 +96,30 @@
                                 item-value="id_kendaraan"
                                 outlined
                             ></v-autocomplete>
-                            <v-radio-group
-                                class="mt-n3"
-                                v-model="form.no_rangka_method"
-                                row
-                                label="Pilih Metode Input Nomor Rangka/VIN"
-                                :rules="noRangkaRules"
-                            >
-                                <v-radio value=1>
-                                    <template v-slot:label>
-                                        <v-icon>mdi-keyboard</v-icon><div>&nbsp;Input manual</div>
-                                    </template>
-                                </v-radio>
-                                <v-radio value=2>
-                                    <template v-slot:label>
-                                        <v-icon>mdi-camera</v-icon><div>&nbsp;Foto STNK/Nomor Rangka</div>
-                                    </template>
-                                </v-radio>
-                            </v-radio-group>
+                            <v-card flat>
+                            <v-alert outlined color="grey darken-1">
+                                <v-radio-group
+                                    class="mt-n2 mb-n5"
+                                    v-model="form.no_rangka_method"
+                                    row
+                                    label="Pilih Metode Input Nomor Rangka:"
+                                    :rules="noRangkaRules"
+                                >
+                                    <v-radio value=1>
+                                        <template v-slot:label>
+                                            <v-icon>mdi-keyboard</v-icon><div>&nbsp;Input manual</div>
+                                        </template>
+                                    </v-radio>
+                                    <v-radio value=2>
+                                        <template v-slot:label>
+                                            <v-icon>mdi-camera</v-icon><div>&nbsp;Foto STNK/Nomor Rangka</div>
+                                        </template>
+                                    </v-radio>
+                                </v-radio-group>
+                            </v-alert>
+                            </v-card>
                             <span v-if="form.no_rangka_method==1">
-                                <v-text-field :rules="noRangkaRules" v-model="form.no_rangka" label="Nomor Rangka/VIN" prepend-inner-icon="mdi-car-search" hint="Nomor rangka dapat ditemukan di STNK" outlined></v-text-field>
+                                <v-text-field :rules="noRangkaRules" v-model="form.no_rangka" label="Nomor Rangka" prepend-inner-icon="mdi-car-search" hint="Nomor rangka dapat ditemukan di STNK" outlined></v-text-field>
                             </span>
                             <span v-else-if="form.no_rangka_method==2">
                                 <v-file-input
@@ -123,7 +129,8 @@
                                     id="no_rangka_image"
                                     enctype="multipart/form-data"
                                     accept="image/png, image/jpeg, image/bmp"
-                                    placeholder="Foto Nomor Rangka"
+                                    placeholder="Pastikan nomor rangka dapat terlihat dengan jelas"
+                                    hint="Pastikan nomor rangka dapat terlihat dengan jelas"
                                     prepend-icon="mdi-camera"
                                     label="Foto Nomor Rangka"
                                     outlined
@@ -934,9 +941,10 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .background{
     background: url( 'https://www.hondasolobaru.co.id/wp-content/uploads/2022/08/download-2.png') no-repeat center center;
     background-size: cover;
   }
+
 </style>    

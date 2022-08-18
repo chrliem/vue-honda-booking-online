@@ -77,13 +77,25 @@ router.beforeEach((to, from, next)=>{
 
 router.beforeEach((to, from, next)=>{
     document.title = to.meta.title
-    if(to.name === 'UserDashboard' && localStorage.getItem('token')!==null && localStorage.getItem('role')===2) next({ name: 'BookingDashboard'})
+    if(to.name === 'UserDashboard' && localStorage.getItem('token')!==null && localStorage.getItem('role')==2) next({ name: 'BookingDashboard'})
     else next()
 })
 
 router.beforeEach((to, from, next)=>{
     document.title = to.meta.title
-    if(to.name === 'BookingDashboard' && localStorage.getItem('token')!==null && localStorage.getItem('role')===1) next({ name: 'UserDashboard'})
+    if(to.name === 'UserDashboard' && localStorage.getItem('token')!==null && localStorage.getItem('role')==1) next({ name: 'UserDashboard'})
+    else next()
+})
+
+router.beforeEach((to, from, next)=>{
+    document.title = to.meta.title
+    if(to.name === 'BookingDashboard' && localStorage.getItem('token')!==null && localStorage.getItem('role')==1) next({ name: 'UserDashboard'})
+    else next()
+})
+
+router.beforeEach((to, from, next)=>{
+    document.title = to.meta.title
+    if(to.name === 'AdminLogin' && localStorage.getItem('token')!==null && localStorage.getItem('role')==2) next({ name: 'BookingDashboard'})
     else next()
 })
 

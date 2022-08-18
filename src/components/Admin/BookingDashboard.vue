@@ -387,160 +387,6 @@
                 </template>
                
             </v-data-iterator>
-            
-
-        <!-- <template>
-            <v-dialog
-                v-model="editDataDialog"
-                max-width="800"
-                content-class="edit-data-dialog"
-            >
-            <v-card>
-            <v-toolbar
-              color="secondary"
-              dark
-            ><h2>Edit Data Booking</h2></v-toolbar>
-                    <v-form v-model="valid" ref="form" class="mx-5 my-5">
-                        <v-text-field :rules="namaRules" v-model="form.nama_customer" label="Nama Lengkap" hint="Contoh: John Doe" prepend-inner-icon="mdi-account" outlined ></v-text-field>
-                        <v-text-field v-model="form.email_customer" label="Alamat Email" hint="Contoh: username@email.com" prepend-inner-icon="mdi-email" outlined></v-text-field>
-                        <v-text-field placeholder="081234567890" :rules="noHPRules" v-model="form.no_handphone" label="Nomor Handphone" hint="Contoh: 081234567890" prepend-inner-icon="mdi-cellphone" outlined></v-text-field>
-                        <v-text-field placeholder="AD 1234 HO" :rules="noPolisiRules" v-model="form.no_polisi" label="Nomor Polisi" prepend-inner-icon="mdi-car-search" hint="Contoh: AD 1234 HO" outlined></v-text-field>
-                        <v-row>
-                            <v-col cols="12" md="6">
-                            <v-autocomplete
-                                prepend-inner-icon="mdi-car"
-                                :rules="kendaraanRules"
-                                v-model="form.model_kendaraan"
-                                label="Model Kendaraan"
-                                :items="kendaraan"
-                                item-text="model_kendaraan"
-                                item-value="id_kendaraan"
-                                outlined
-                            ></v-autocomplete>
-                        </v-col>
-                        <v-col cols="12" md="6">
-                            <v-text-field :rules="noRangkaRules" v-model="form.no_rangka" label="Nomor Rangka/VIN" prepend-inner-icon="mdi-car-search" hint="Nomor rangka dapat ditemukan di STNK" outlined></v-text-field>
-                        </v-col>
-                    </v-row>        
-                    <v-row class="mt-n7">
-                    <v-col cols="12" md="4">
-                        <v-autocomplete
-                            prepend-inner-icon="mdi-map-marker"
-                            :rules="dealerRules"
-                            v-model="form.nama_dealer"
-                            label="Dealer"
-                            outlined
-                            :items="dealer"
-                            item-text="nama_dealer"
-                            item-value="id_dealer"
-                        ></v-autocomplete>
-                    </v-col>
-                    <v-col cols="12" md="4">
-                        <v-autocomplete
-                            prepend-inner-icon="mdi-tools"
-                            v-model="form.jenis_pekerjaan"
-                            :rules="jenisPekerjaanRules"
-                            label="Jenis Pekerjaan"
-                            :items="jenis_pekerjaan"
-                            item-text="jenis_pekerjaan"
-                            item-value="jenis_pekerjaan"
-                            outlined
-                        ></v-autocomplete>
-                    </v-col>
-                    <v-col cols="12" md="4">
-                        <v-autocomplete
-                            v-show="form.jenis_pekerjaan===''"
-                            label="Jenis Layanan"
-                            disabled
-                            outlined
-                        ></v-autocomplete>
-                        <span v-if="form.jenis_pekerjaan==='Authorized Workshop'">
-                            <v-autocomplete
-                            :rules="jenisLayananRules"
-                            v-model="form.jenis_layanan"
-                            label="Jenis Layanan"
-                            :items="layanan_authorized_workshop"
-                            item-text="jenis_layanan"
-                            item-value="jenis_layanan"
-                            outlined
-                        ></v-autocomplete>
-                        </span><span v-else-if="form.jenis_pekerjaan==='Home Service'">
-                            <v-autocomplete
-                                :rules="jenisLayananRules"
-                                label="Jenis Layanan"
-                                v-model="form.jenis_layanan"
-                                :items="layanan_home_service"
-                                item-text="jenis_layanan"
-                                item-value="jenis_layanan"
-                                outlined
-                            ></v-autocomplete>
-                        </span>
-                    </v-col>
-                </v-row>    
-                <v-row class="mt-n7">
-                    <v-col cols="12" md="6">
-                    <v-menu
-                        ref="menu1"
-                        v-model="menu1"
-                        :close-on-content-click="false"
-                        transition="scale-transition"
-                        offset-y
-                        max-width="100%"
-                        min-width="auto">
-                        <template v-slot:activator="{ on, attrs }">
-                            <v-text-field 
-                                prepend-inner-icon="mdi-calendar-range"
-                                v-model="form.tgl_service"
-                                :rules="tglServiceRules"
-                                label="Tanggal Service"
-                                persistent-hint
-                                v-bind="attrs"
-                                v-on="on"
-                                outlined
-                            ></v-text-field>
-                        </template>
-                        <v-date-picker
-                            v-model="form.tgl_service"
-                            no-title
-                            :min="new Date((new Date()).valueOf() + 1000*3600*24).toISOString().slice(0,10)"
-                            locale="id"
-                        ></v-date-picker>
-                    </v-menu>   
-                    </v-col>
-                    <v-col cols="12" md="6">
-                        <v-autocomplete
-                            prepend-inner-icon="mdi-clock-time-eight"
-                            v-model="form.jam_service"
-                            :rules="jamServiceRules"
-                            label="Jam Service"
-                            :items="jam_service"
-                            item-text="name"
-                            item-value="name"
-                            outlined
-                        ></v-autocomplete>
-                    </v-col>
-                </v-row>
-                    
-                <v-textarea
-                    prepend-inner-icon="mdi-pencil-box-multiple"
-                    v-model="form.keterangan_customer"
-                    outlined
-                    label="Pesan/Keluhan"
-                    hint="Sampaikan pesan atau keluhan yang ingin Anda sampaikan"
-                ></v-textarea>
-                    </v-form>
-            <v-card-actions class="justify-end">
-                
-              <v-btn
-                text
-                color="error"
-                @click="close"
-              >Tutup</v-btn>
-              <v-btn text color="primary" @click="save">Simpan</v-btn>
-            </v-card-actions>
-          </v-card>
-            </v-dialog>
-        </template> -->
 
         <template>
             <v-dialog
@@ -978,7 +824,7 @@ import moment from 'moment-timezone';
         ],
         noPolisiRules: [
             (v) => !!v || 'Nomor polisi harus diisi',
-            (v) => /^[A-Za-z]{1,2}\s{1}\d{0,4}\s{0,1}[A-Z]{0,3}$/.test(v) || "Nomor polisi tidak sesuai format. Contoh: AD 1234 HO"
+            (v) => /^[A-Za-z]{1,2}\s{1}\d{0,4}\s{0,1}[A-Za-z]{0,3}$/.test(v) || "Nomor polisi tidak sesuai format. Contoh: AD 1234 HO"
         ],
         kendaraanRules: [
             (v) => !!v || 'Model kendaraan harus diisi',
@@ -1122,50 +968,23 @@ import moment from 'moment-timezone';
         save(){
             if(this.$refs.form.validate()){
                 
-                if(this.form.email_customer===null){
-                    this.updateBooking.append('nama_customer', this.form.nama_customer)
+                if(this.form.email_customer===null){  
                     this.updateBooking.append('email_customer', '')
-                    this.updateBooking.append('no_handphone', this.form.no_handphone)
-                    this.updateBooking.append('no_polisi', this.form.no_polisi)
-                    this.updateBooking.append('id_dealer', this.form.nama_dealer)
-                    this.updateBooking.append('id_kendaraan', this.form.model_kendaraan)
-                    this.updateBooking.append('no_rangka', this.form.no_rangka)
-                    var formatted_tgl_service = this.form.tgl_service+' '+this.form.jam_service
-                    this.updateBooking.append('tgl_service',formatted_tgl_service)
-                    this.updateBooking.append('jenis_pekerjaan', this.form.jenis_pekerjaan)
-                    this.updateBooking.append('jenis_layanan', this.form.jenis_layanan)
-                    this.updateBooking.append('keterangan_customer', this.form.keterangan_customer)
-
-                    var url = this.$api+'/booking/'+this.editId
-                    this.$http.post(url, this.updateBooking, {
-                        headers: {
-                            'Authorization':'Bearer '+localStorage.getItem('token')
-                        }
-                    }).then(response=>{
-                        this.response_message = response.data.message
-                        this.color = 'blue-grey darken-1'
-                        this.snackbar1 = true
-                        this.icon_message = 'mdi-check-decagram'
-                        this.title_message = 'Success'
-                        this.editDataDialog = false
-                        this.readData()
-                        
-                    }).catch(error=>{
-                        this.error_message = error.response.data.message;
-                        this.color = 'warning'
-                        this.snackbar = true
-                        this.icon_message = 'mdi-alert-decagram'
-                        this.title_message = 'Error'
-                    })
-
                 }else{
+                    this.updateBooking.append('email_customer', this.form.email_customer)
+                }
+
+                if(this.form.no_rangka===null){
+                    this.updateBooking.append('no_rangka','')
+                }else{
+                    this.updateBooking.append('no_rangka', this.form.no_rangka)
+                }
+                    
                     this.updateBooking.append('nama_customer', this.form.nama_customer)
-                    this.updateBooking.append('email_customer', this.form.email_customer)                    
                     this.updateBooking.append('no_handphone', this.form.no_handphone)
                     this.updateBooking.append('no_polisi', this.form.no_polisi)
                     this.updateBooking.append('id_dealer', this.form.nama_dealer)
                     this.updateBooking.append('id_kendaraan', this.form.model_kendaraan)
-                    this.updateBooking.append('no_rangka', this.form.no_rangka)
                     var formatted_tgl_service = this.form.tgl_service+' '+this.form.jam_service
                     this.updateBooking.append('tgl_service',formatted_tgl_service)
                     this.updateBooking.append('jenis_pekerjaan', this.form.jenis_pekerjaan)
@@ -1193,7 +1012,6 @@ import moment from 'moment-timezone';
                         this.icon_message = 'mdi-alert-decagram'
                         this.title_message = 'Error'
                     })
-                }
             }
         },
         saveStatus(){
