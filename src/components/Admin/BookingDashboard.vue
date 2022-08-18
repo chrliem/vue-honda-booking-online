@@ -605,10 +605,10 @@
                             ></v-autocomplete>
                         </v-col>
                         <v-col cols="12" md="4" v-show="form.no_rangka_image!==null">
-                            <v-text-field :rules="noRangkaRules" v-model="form.no_rangka" label="Nomor Rangka/VIN" prepend-inner-icon="mdi-car-search" outlined></v-text-field>                            
+                            <v-text-field v-model="form.no_rangka" label="Nomor Rangka/VIN" prepend-inner-icon="mdi-car-search" outlined></v-text-field>                            
                         </v-col>
                         <v-col cols="12" md="6" v-show="form.no_rangka_image===null">
-                            <v-text-field :rules="noRangkaRules" v-model="form.no_rangka" label="Nomor Rangka/VIN" prepend-inner-icon="mdi-car-search" outlined></v-text-field>                            
+                            <v-text-field v-model="form.no_rangka" label="Nomor Rangka/VIN" prepend-inner-icon="mdi-car-search" outlined></v-text-field>                            
                         </v-col>
                         <v-col cols="12" md="2" v-show="form.no_rangka_image!==null">
                             <v-btn class="mt-2" @click="openImageDialog(form.no_rangka_image)"> Lihat Nomor Rangka </v-btn>
