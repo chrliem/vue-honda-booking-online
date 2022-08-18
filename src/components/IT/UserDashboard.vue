@@ -70,7 +70,8 @@
                     :search="search"
                     light>
                     <template v-slot:[`item.actions`]="{ item }">
-                        <v-chip><v-icon color="primary" @click="editHandler(item)">mdi-pencil</v-icon></v-chip>
+                        <v-chip><v-icon color="primary" @click="editHandler1(item)">mdi-pencil</v-icon></v-chip>
+                        <v-chip><v-icon color="secondary" @click="editHandler(item)">mdi-lock</v-icon></v-chip>
                         <v-chip><v-icon color="red" @click="deleteHandler(item.id)">mdi-delete</v-icon></v-chip>            
                 </template>
                 </v-data-table>
@@ -104,6 +105,7 @@
                             item-text="role"
                             item-value="id"
                         ></v-autocomplete>
+                        <v-text-field v-show="form.id_role===2" v-model="form.no_handphone" label="No. Handphone" hint="081234567890" prepend-inner-icon="mdi-cellphone" outlined required></v-text-field>                        
                         <v-autocomplete
                             v-show="form.id_role===2"
                             v-model="form.id_dealer"
@@ -153,6 +155,43 @@
           </v-card>
             </v-dialog>
         </template>
+
+        <template>
+            <v-dialog
+                v-model="editUserDialog"
+                max-width="600"
+                content-class="edit-user-dialog"
+            >
+            <v-card>
+            <v-toolbar
+              color="secondary"
+              dark
+            ><h2>Ubah User</h2></v-toolbar>
+                    <v-form v-model="valid" ref="form2" class="mx-5 my-5">
+                        <v-text-field :rules="namaRules" v-model="form.nama" label="Nama" hint="John Doe" prepend-inner-icon="mdi-account" outlined required></v-text-field>
+                        <v-text-field :rules="emailRules" v-model="form.email" label="Email" hint="username@email.com" prepend-inner-icon="mdi-account" outlined required></v-text-field>
+                        <v-text-field v-show="temp_id_role==2" v-model="form.no_handphone" label="No. Handphone" hint="081234567890" prepend-inner-icon="mdi-cellphone" outlined required></v-text-field>                        
+                        <v-autocomplete
+                            v-show="temp_id_role==2"
+                            v-model="form.id_dealer"
+                            prepend-inner-icon="mdi-map-marker"
+                            label="Dealer"
+                            outlined
+                            :items="dealer"
+                            item-text="nama_dealer"
+                            item-value="id_dealer"
+                        ></v-autocomplete>
+                    </v-form>
+            <v-card-actions class="justify-end">
+              <v-btn
+                text
+                @click="close3"
+              >Close</v-btn>
+            <v-btn text color="primary" @click="validate3">Simpan</v-btn>
+            </v-card-actions>
+          </v-card>
+            </v-dialog>
+    </template> 
 
     <template>
          <v-dialog v-model="dialogConfirm" persistent max-width="400px">
@@ -232,12 +271,14 @@
                 ],
                 addUserDialog: false,
                 editPasswordDialog: false,
+                editUserDialog: false,
                 dialogConfirm: false,
                 snackbar: false,
                 snackbar1: false,
                 valid:'',
                 editId: '',
                 users: [],
+                temp_id_role:'',
                 search: null,
                 color: '',
                 response_message:'',
@@ -251,7 +292,8 @@
                     email:'',
                     id_dealer:'',
                     password: '',
-                    id_role:''
+                    id_role:'',
+                    no_handphone:''
                 },
                 namaRules: [
                     (v) => !!v || 'Nama harus diisi',
@@ -268,10 +310,15 @@
                 roleRules: [
                     (v) => !!v || 'Role harus diisi'
                 ],
+                noHPRules: [
+                    (v) => !!v || 'Nomor handphone harus diisi',
+                    (v) => /^(\+62|62|0)8[1-9][0-9]{6,10}$/.test(v) || "Nomor handphone invalid"
+                ],
                 headers: [
                     {text: "Nama", value:"nama", align:'center'},
                     {text: "Alamat Email", value: "email", align:'center'},
                     {text: "Dealer", value: "nama_dealer", align:'center'},
+                    {text: "No Handphone", value: "no_handphone", align:'center'},
                     {text: 'Role', value: 'role', align:'center'},
                     {text: "Actions", value:'actions', align:'center'}
                 ],
@@ -288,12 +335,24 @@
                     this.savePassword()
                 }
             },
+            validate3(){
+                if(this.$refs.form2.validate()){
+                    this.updateUser()
+                }
+            },
             saveUser(){
                 this.userData.append('nama', this.form.nama)
                 this.userData.append('email', this.form.email)
                 this.userData.append('password', this.form.password)
                 this.userData.append('id_dealer', this.form.id_dealer)
                 this.userData.append('id_role', this.form.id_role)
+                
+                // if(this.form.no_handphone===''){
+                //     this.userData.append('no_handphone', '')
+                // }else{
+                    this.userData.append('no_handphone',this.form.no_handphone)
+                // }
+
                 this.$http.post(this.$api+'/register', this.userData, {
                      headers:{
                         'Authorization':'Bearer '+localStorage.getItem('token')
@@ -305,6 +364,42 @@
                     this.icon_message = 'mdi-check-decagram'
                     this.title_message = 'Success'
                     this.close()
+                    this.readData()
+                }).catch(error=>{
+                    this.error_message = error.response.data.message
+                    this.color = 'warning'
+                    this.snackbar = true
+                    this.icon_message = 'mdi-alert-decagram'
+                    this.title_message = 'Error'
+                })
+            },
+            updateUser(){
+                this.userData.append('nama', this.form.nama)
+                this.userData.append('email', this.form.email)
+
+                if(this.form.no_handphone===null){
+                    this.userData.append('no_handphone', '')
+                }else{
+                    this.userData.append('no_handphone',this.form.no_handphone)
+                }
+
+                if(this.form.id_dealer===null){
+                    this.userData.append('id_dealer', '')
+                }else{
+                    this.userData.append('id_dealer',this.form.id_dealer)
+                }
+
+                this.$http.post(this.$api+'/user/'+this.editId, this.userData, {
+                     headers:{
+                        'Authorization':'Bearer '+localStorage.getItem('token')
+                    }
+                }).then(response=>{
+                    this.response_message = response.data.message
+                    this.color = 'blue-grey darken-1'
+                    this.snackbar1 = true
+                    this.icon_message = 'mdi-check-decagram'
+                    this.title_message = 'Success'
+                    this.close3()
                     this.readData()
                 }).catch(error=>{
                     this.error_message = error.response.data.message
@@ -394,6 +489,15 @@
                 this.editId = item.id
                 this.editPasswordDialog = true;
             },
+            editHandler1(item){
+                this.editId = item.id
+                this.temp_id_role = item.id_role
+                this.form.nama = item.nama
+                this.form.email = item.email
+                this.form.no_handphone = item.no_handphone
+                this.form.id_dealer = item.id_dealer
+                this.editUserDialog = true
+            },
             deleteHandler(id){
                 this.deleteId = id
                 this.dialogConfirm = true
@@ -410,6 +514,10 @@
             close2(){
                 this.dialogConfirm = false
             },
+            close3(){
+                this.editUserDialog = false
+                this.$refs.form2.reset()
+            }
         },
         mounted(){
             this.readData();
