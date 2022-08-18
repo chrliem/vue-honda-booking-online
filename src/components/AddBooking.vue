@@ -489,7 +489,7 @@
                     ></v-checkbox>
                     <template>
                     <!-- Production -->
-                    <!-- <vue-recaptcha 
+                    <vue-recaptcha 
                         class="d-flex justify-center"
                         v-model="form.captcha"
                         ref="recaptcha" 
@@ -503,9 +503,9 @@
                             class="mt-3 mx-12 text-caption"
                         >
                             {{ error_captcha }}
-                        </v-alert> -->
+                        </v-alert>
                         <!-- Development -->
-                        <vue-recaptcha 
+                        <!-- <vue-recaptcha 
                         class="d-flex justify-center"
                         v-model="form.captcha"
                         ref="recaptcha" 
@@ -519,7 +519,7 @@
                             class="mt-3 mx-12 text-caption"
                         >
                             {{ error_captcha }}
-                        </v-alert>
+                        </v-alert> -->
                 </template>
                 </v-form>
             </v-card>
