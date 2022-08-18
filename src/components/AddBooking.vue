@@ -714,6 +714,17 @@
             Close</v-btn>
             </template>
         </v-snackbar>
+        <v-snackbar elevation="24" v-model="snackbar3" color="secondary" dark>
+            <v-layout align-center pr-4>
+             <v-icon class="pr-3" dark large>mdi-timer-sand-empty</v-icon>
+                <v-layout column>
+                    <div>
+                        <strong>Loading . . .</strong>
+                    </div>
+                    <div>Mohon tunggu</div>
+                </v-layout>
+            </v-layout>
+        </v-snackbar>
   </v-app>
 </template>
 
@@ -730,6 +741,7 @@ export default {
             snackbar: false,
             snackbar1: false,
             snackbar2: false,
+            snackbar3: false,
             captcha_validation: false,
             error_message: '',
             response_message: '',
@@ -881,7 +893,7 @@ export default {
         },
         submit(){
             // var no_rangka_image = document.getElementById('no_rangka_image')
-
+            this.snackbar3 = true
             if(this.no_rangka_image){
                 this.booking.append('no_rangka_image',this.no_rangka_image)
             }
@@ -913,8 +925,10 @@ export default {
                 // }, 3000);
             }).catch(error=>{
                 this.error_message = error.response.data.message
-                this.color = 'red'
-                this.snackbar = true
+                this.color = 'error'
+                this.snackbar2 = true
+            }).finally(()=>{
+                this.snackbar3 = false
             })
         },
         reload(){
