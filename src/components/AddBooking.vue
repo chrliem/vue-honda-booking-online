@@ -55,7 +55,7 @@
             <v-stepper-content step="1">
                 <v-card flat color="blue-grey lighten-5" class="mb-12 pa-5" height="auto">
                     <ol>
-                        <li class="text-left">Booking harus di lakukan maksimal H-1 sebelum pukul 16.00 WIB jika service dilakukan pada esok harinya.</li>
+                        <li class="text-left">Booking harus di lakukan maksimal H-1 sebelum pukul 15.00 WIB jika service dilakukan pada esok harinya.</li>
                         <li class="text-left">Setelah melakukan Booking Online, maka staff booking service akan segera menghubungi Anda untuk konfirmasi ulang, apakah jam booking tersedia atau sudah penuh</li>
                         <li class="text-left">Jika jam booking yang diinginkan sudah penuh, akan di tawarkan opsi untuk jam lain oleh staff booking service</li>
                         <li class="text-left">Konfirmasi booking kepada customer oleh staff booking dilakukan pada jam kerja Senin-Jumat pkl 08.00-16.00 WIB dan Sabtu pkl 08.00-12.00 WIB</li>
