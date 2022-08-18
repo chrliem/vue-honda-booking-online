@@ -83,7 +83,7 @@ router.beforeEach((to, from, next)=>{
 
 router.beforeEach((to, from, next)=>{
     document.title = to.meta.title
-    if(to.name === 'UserDashboard' && localStorage.getItem('token')!==null && localStorage.getItem('role')==1) next({ name: 'UserDashboard'})
+    if(to.name === 'ITLogin' && localStorage.getItem('token')!==null && localStorage.getItem('role')==1) next({ name: 'UserDashboard'})
     else next()
 })
 
