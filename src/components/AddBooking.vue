@@ -924,14 +924,11 @@ export default {
                 this.response_message = response.data.message
                 this.successful_dialog = true
                 this.$refs.recaptcha.reset()
-                // setTimeout(function(){
-                //     window.location.reload(1);
-                // }, 3000);
+                this.snackbar3 = false
             }).catch(error=>{
                 this.error_message = error.response.data.message
                 this.color = 'error'
                 this.snackbar2 = true
-            }).finally(()=>{
                 this.snackbar3 = false
             })
         },

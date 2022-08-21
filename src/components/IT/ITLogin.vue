@@ -122,6 +122,17 @@
             Close</v-btn>
             </template>
         </v-snackbar>
+        <v-snackbar elevation="24" v-model="snackbar3" color="secondary" dark>
+            <v-layout align-center pr-4>
+             <v-icon class="pr-3" dark large>mdi-timer-sand-empty</v-icon>
+                <v-layout column>
+                    <div>
+                        <strong>Loading . . .</strong>
+                    </div>
+                    <div>Mohon tunggu</div>
+                </v-layout>
+            </v-layout>
+        </v-snackbar>
     </v-app>
 </template>
 
@@ -136,6 +147,7 @@ export default {
             snackbar: false,
             snackbar1: false,
             snackbar2: false,
+            snackbar3: false,
             role: 1,
             form:{
                 nama: '',
@@ -157,6 +169,7 @@ export default {
     methods:{
         login(){
             if(this.$refs.form.validate()){
+                this.snackbar3 = true
                 this.$http.post(this.$api+'/login',{
                 email: this.form.email,
                 password: this.form.password, 
@@ -170,6 +183,7 @@ export default {
                     this.response_message = response.data.message;
                     this.color = 'blue-grey darken-1'
                     this.snackbar1 = true
+                    this.snackbar3 = false
                     this.icon_message = 'mdi-check-decagram'
                     this.title_message = 'Success'
                     this.$router.push({
@@ -181,6 +195,7 @@ export default {
                     localStorage.removeItem('role')
                     this.color = 'error'
                     this.snackbar2 = true
+                    this.snackbar3 = false
                     this.icon_message = 'mdi-cancel'
                     this.title_message = 'Error'
                     this.no_access_message = 'Anda tidak memiliki akses'
