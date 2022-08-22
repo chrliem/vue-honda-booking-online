@@ -701,6 +701,17 @@
             Close</v-btn>
             </template>
         </v-snackbar>
+         <v-snackbar elevation="24" v-model="snackbar3" color="secondary" dark>
+            <v-layout align-center pr-4>
+             <v-icon class="pr-3" dark large>mdi-timer-sand-empty</v-icon>
+                <v-layout column>
+                    <div>
+                        <strong>Loading . . .</strong>
+                    </div>
+                    <div>Mohon tunggu</div>
+                </v-layout>
+            </v-layout>
+        </v-snackbar>
          <v-overlay
                 :opacity="0.5"
                 :value="overlay"
@@ -724,6 +735,7 @@ import moment from 'moment-timezone';
         tab: null,
         snackbar: false,
         snackbar1: false,
+        snackbar3: false,
         editId: '',
         editDataDialog: false,
         editStatusDialog: false,
@@ -966,8 +978,9 @@ import moment from 'moment-timezone';
             this.editStatusDialog = true
         },
         save(){
+
             if(this.$refs.form.validate()){
-                
+                this.snackbar3 = true
                 if(this.form.email_customer===null){  
                     this.updateBooking.append('email_customer', '')
                 }else{
@@ -1000,6 +1013,7 @@ import moment from 'moment-timezone';
                         this.response_message = response.data.message
                         this.color = 'blue-grey darken-1'
                         this.snackbar1 = true
+                        this.snackbar3 = false
                         this.icon_message = 'mdi-check-decagram'
                         this.title_message = 'Success'
                         this.editDataDialog = false
@@ -1016,6 +1030,7 @@ import moment from 'moment-timezone';
         },
         saveStatus(){
             if(this.$refs.form1.validate()){
+                this.snackbar3 = true
                 if(this.form.keterangan_cco===null){
                     this.updateBooking.append('status', this.form.status)
                     this.updateBooking.append('keterangan_cco', '')
@@ -1028,6 +1043,7 @@ import moment from 'moment-timezone';
                         this.response_message = response.data.message
                         this.color = 'blue-grey darken-1'
                         this.snackbar1 = true
+                        this.snackbar3 = false
                         this.icon_message = 'mdi-check-decagram'
                         this.title_message = 'Success'
                         this.editStatusDialog = false
@@ -1052,6 +1068,7 @@ import moment from 'moment-timezone';
                         this.response_message = response.data.message
                         this.color = 'blue-grey darken-1'
                         this.snackbar1 = true
+                        this.snackbar3 = false
                         this.icon_message = 'mdi-check-decagram'
                         this.title_message = 'Success'
                         this.editStatusDialog = false
