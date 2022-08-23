@@ -265,6 +265,7 @@
                 activeTab:'',
                 tabs:[
                     { name: 'UserDashboard', text:'User', align:'center'},
+                    { name: 'BookingIndex', text:'Booking', align:'center'},
                     { name: 'WhatsappDashboard', text:'Whatsapp', align:'center'},
                     { name: 'DealerDashboard', text:'Dealer', align:'center'},
                     { name: 'KendaraanDashboard', text:'Kendaraan', align:'center'}

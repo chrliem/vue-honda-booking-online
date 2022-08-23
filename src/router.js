@@ -59,7 +59,13 @@ const router = new VueRouter({
             name:"KendaraanDashboard",
             meta: {title:'Kendaraan Dashboard'},
             component: importComponent('IT/KendaraanDashboard'),
-        },              
+        },    
+        {
+            path:"/it/booking-index",
+            name:"BookingIndex",
+            meta: {title:'Booking Dashboard'},
+            component: importComponent('IT/BookingIndex'),
+        },          
     ]
 });
 
